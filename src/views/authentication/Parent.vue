@@ -9,7 +9,7 @@
               <div class="col-lg-6 bg-dark">
                 <div class="p-lg-5 p-4 auth-one-bg h-100">
                   <div class="position-relative h-100 d-flex flex-column">
-                    <div class="mb-4"><a href="index.html" class="d-block"><img src="/assets/images/logo-light.png" alt=""
+                    <div class="mb-4"><a href="index.html" class="d-block"><img src="/images/logo.jpeg" alt=""
                           height="25"></a></div>
                     <div class="mt-auto">
                       <div class="mb-3"><i class="ri-double-quotes-l display-4 text-success"></i></div>

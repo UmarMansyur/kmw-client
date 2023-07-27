@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import UserHeader from './UserHeader.vue';
-import UserSideBar from './UserSidebar.vue';
+import UserSideBar from './UserSideBar.vue';
 
 </script>
 <template>

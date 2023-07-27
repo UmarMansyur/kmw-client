@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Sidebar from './Sidebar.vue';
+import AdminSidebar from './SideBar.vue';
 import Header from './Header.vue';
 </script>
 
@@ -7,7 +7,7 @@ import Header from './Header.vue';
 <template>
   <div id="layout-wrapper">
     <Header />
-    <Sidebar />
+    <AdminSidebar />
     <div class="main-content">
       <div class="page-content">
         <div class="container-fluid">

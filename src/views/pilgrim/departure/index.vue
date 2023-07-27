@@ -51,8 +51,8 @@
                       <p class="mb-0 mt-2 pt-1 text-muted">Belum ada tanggal lunas</p>
 
                       <div class="d-flex flex-wrap align-items-start event-img mt-3 gap-2">
-                        <img src="assets/images/small/img-2.jpg" alt="" class="img-fluid rounded" width="60">
-                        <img src="assets/images/small/img-5.jpg" alt="" class="img-fluid rounded" width="60">
+                        <img src="/images/small/img-2.jpg" alt="" class="img-fluid rounded" width="60">
+                        <img src="/images/small/img-5.jpg" alt="" class="img-fluid rounded" width="60">
                       </div>
                     </div>
                   </div>
