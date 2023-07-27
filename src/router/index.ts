@@ -10,6 +10,26 @@ const routes: Array<RouteRecordRaw> = [
     path: '/tabungan',
     name: 'Tabungan',
     component: () => import('../views/admin/savings/index.vue'),
+  },
+  {
+    path: '/verifikasi-pembayaran',
+    name: 'Verifikasi Pembayaran',
+    component: () => import('../views/admin/payment/index.vue'),
+  },
+  {
+    path: '/laporan',
+    name: 'Laporan',
+    component: () => import('../views/admin/report/index.vue'),
+  },
+  {
+    path: '/pengaturan/kategori',
+    name: 'Pengaturan Kategori',
+    component: () => import('../views/admin/settings/category/index.vue'),
+  },
+  {
+    path: '/pengaturan/jamaah',
+    name: 'Pengaturan jamaah',
+    component: () => import('../views/admin/settings/pilgrim/index.vue'),
   }
 ]
 

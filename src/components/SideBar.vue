@@ -23,25 +23,25 @@
             </RouterLink>
           </li>
           <li>
-            <a href="index.html" class="waves-effect">
+            <RouterLink to="/verifikasi-pembayaran" class="waves-effect">
               <i data-feather="check-circle"></i>
               <span>Verifikasi Pembayaran</span>
-            </a>
+            </RouterLink>
           </li>
           <li>
-            <a href="index.html" class="waves-effect">
+            <RouterLink to="/laporan" class="waves-effect">
               <i data-feather="file-text"></i>
               <span>Laporan</span>
-            </a>
+            </RouterLink>
           </li>
-          <li>
+          <li :class="$route.path.includes('/pengaturan') ? 'mm-active' : ''">
             <a href="javascript: void(0);" class="has-arrow waves-effect" aria-expanded="false">
               <i data-feather="settings"></i>
               <span>Pengaturan</span>
             </a>
             <ul class="sub-menu mm-collapse">
-              <li><a href="email-inbox.html">Jamaah</a></li>
-              <li><a href="email-read.html">Kategori Tabungan</a></li>
+              <li><RouterLink to="/pengaturan/jamaah">Jamaah</RouterLink></li>
+              <li><RouterLink to="/pengaturan/kategori">Kategori Tabungan</RouterLink></li>
             </ul>
           </li>
         </ul>
@@ -49,10 +49,14 @@
     </div>
   </div>
 </template>
+
+
 <script lang="ts">
 declare const $: any;
 declare const feather: any;
 </script>
+
+
 <script setup lang="ts">
 import { onMounted } from "vue";
 onMounted(() => {
