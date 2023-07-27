@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import Sidebar from './Sidebar.vue';
-import Header from './Header.vue';
+import UserHeader from './UserHeader.vue';
+import UserSideBar from './UserSidebar.vue';
+
 </script>
-
-
 <template>
   <div id="layout-wrapper">
-    <Header />
-    <Sidebar />
+    <UserHeader />
+    <UserSideBar />
     <div class="main-content">
       <div class="page-content">
         <div class="container-fluid">
@@ -30,9 +29,6 @@ import Header from './Header.vue';
           </div>
         </div>
       </footer>
-
     </div>
-    <!-- end main content-->
-
   </div>
 </template>

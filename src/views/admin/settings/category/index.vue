@@ -2,6 +2,8 @@
 import Parent from '../../../../components/Parent.vue';
 import BreadCrumb from '../../../../components/BreadCrumb.vue';
 import Pagination from '../../../../components/Pagination.vue';
+import Modal from '../../../../components/Modal.vue';
+import Form from './Form.vue';
 </script>
 <template>
   <Parent>
@@ -35,6 +37,12 @@ import Pagination from '../../../../components/Pagination.vue';
                 <button class="btn btn-info" type="button">
                   <i class="bx bx-search-alt" />
                 </button>
+                <button class="btn btn-primary ms-2" type="button" data-bs-toggle="modal" data-bs-target="#dinamyc-modal">
+                  <i class="bx bx-plus" /> Tambah
+                </button>
+                <Modal title="Tambah Kategori">
+                  <Form/>
+                </Modal>
               </div>
             </div>
           </div>

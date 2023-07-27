@@ -2,6 +2,8 @@
 import Parent from '../../../components/Parent.vue';
 import BreadCrumb from '../../../components/BreadCrumb.vue';
 import Pagination from '../../../components/Pagination.vue';
+import Modal from '../../../components/Modal.vue';
+import Form from './Form.vue';
 </script>
 <template>
   <Parent>
@@ -24,7 +26,7 @@ import Pagination from '../../../components/Pagination.vue';
         </div>
       </div>
       <div class="col-md-3" />
-      <div class="col-md-4 col-12 d-none d-lg-block">
+      <div class="col-md-4 col-12">
         <div class="form-group row">
           <label for="search" class="col-sm-2 col-2 col-form-label">Cari:
           </label>
@@ -35,8 +37,14 @@ import Pagination from '../../../components/Pagination.vue';
                 <button class="btn btn-info" type="button">
                   <i class="bx bx-search-alt" />
                 </button>
-                <button class="btn btn-light ms-2" type="button">
+                <button class="btn btn-light ms-2" type="button" data-bs-target="#dinamyc-modal" data-bs-toggle="modal">
                   <i class="bx bx-filter" />
+                </button>
+                <Modal title="Filter">
+                 <Form/>
+                </Modal>
+                <button class="btn btn-warning ms-2" type="button">
+                  <i class="bx bx-printer"></i> Cetak
                 </button>
               </div>
             </div>
@@ -65,7 +73,7 @@ import Pagination from '../../../components/Pagination.vue';
             <tbody>
               <tr>
                 <td>123123</td>
-                <td>Muhammad Marchel</td>
+                <td>Meita Regina Prayitno</td>
                 <td class="text-end">Rp. 1.000.000</td>
                 <td class="text-end">
                   Rp. 1.000.000
@@ -74,7 +82,7 @@ import Pagination from '../../../components/Pagination.vue';
                   -
                 </td>
                 <td class="text-end">
-                  Rp. 1.000.000
+                  Rp. 50.000.000
                 </td>
               </tr>
             </tbody>
@@ -82,6 +90,7 @@ import Pagination from '../../../components/Pagination.vue';
         </div>
       </div>
     </div>
+
     <Pagination />
   </Parent>
 </template>

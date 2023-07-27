@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import Parent from '../../../../components/Parent.vue';
-import BreadCrumb from '../../../../components/BreadCrumb.vue';
-import Pagination from '../../../../components/Pagination.vue';
+import Parent from '../../../components/Parent.vue';
+import BreadCrumb from '../../../components/BreadCrumb.vue';
+import Pagination from '../../../components/Pagination.vue';
+import Modal from '../../../components/Modal.vue';
+import Form from './Form.vue';
 </script>
 <template>
   <Parent>
@@ -35,9 +37,6 @@ import Pagination from '../../../../components/Pagination.vue';
                 <button class="btn btn-info" type="button">
                   <i class="bx bx-search-alt" />
                 </button>
-                <RouterLink to="/pengaturan/jamaah/tambah" class="btn btn-primary ms-2" type="button">
-                  <i class="bx bx-plus" /> Tambah
-                </RouterLink>
               </div>
             </div>
           </div>
@@ -49,42 +48,35 @@ import Pagination from '../../../../components/Pagination.vue';
         <div class="table-responsive">
           <table class="table table-hover table-bordered">
             <thead class="align-middle">
-              <tr>
-                <th class="col text-center" rowspan="2">No</th>
-                <th colspan="5" class="text-center">Jamaah</th>
-                <th colspan="2" class="text-center">Aksi</th>
-              </tr>
               <tr class="text-center">
                 <th>Tanggal Mendaftar</th>
+                <th>Tanggal Lunas</th>
                 <th>Kode</th>
                 <th class="text-start">Nama Jamaah</th>
                 <th>Kategori</th>
                 <th>Alamat</th>
-                <th class="col">Edit</th>
-                <th class="col">Hapus</th>
+                <th class="col">Aksi</th>
               </tr>
             </thead>
             <tbody class="align-middle">
               <tr>
-                <td class="text-center">1</td>
+                <td>29 Juli 2022</td>
                 <td>29 Juli 2023</td>
                 <td>123123</td>
                 <td>Meita Regina Prayitno</td>
                 <td class="text-center">Blue</td>
                 <td>Rombasan Pragaan Sumenep</td>
                 <td class="text-center">
-                  <RouterLink to="/pengaturan/jamaah/edit/1" class="btn btn-info">
-                    <i class="bx bx-pencil"></i> Edit
-                  </RouterLink>
-                </td>
-                <td class="text-center">
-                  <button class="btn btn-danger">
-                    <i class="bx bx-trash"></i> Hapus
+                  <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#dinamyc-modal">
+                    <i class="bx bx-calendar"></i> Atur
                   </button>
                 </td>
               </tr>
             </tbody>
           </table>
+          <Modal title="Atur Pemberangkatan">
+            <Form />
+          </Modal>
         </div>
       </div>
     </div>

@@ -45,7 +45,7 @@ import Pagination from '../../../components/Pagination.vue';
       <div class="col-12">
         <div class="table-responsive">
           <table class="table table-hover table-bordered">
-            <thead>
+            <thead class="align-middle">
               <tr>
                 <th class="col text-center" colspan="2">Jamaah</th>
                 <th class="col text-center" colspan="2">Pembayaran</th>
@@ -60,10 +60,10 @@ import Pagination from '../../../components/Pagination.vue';
                 <th class="text-center">Terima</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="align-middle">
               <tr>
                 <td>123123</td>
-                <td>Muhammad Marchel</td>
+                <td>Meita Regina Prayitno</td>
                 <td class="text-end">Rp. 1.000.000</td>
                 <td class="text-center">
                   <button type="button" class="btn btn-info waves-effect btn-label waves-light">

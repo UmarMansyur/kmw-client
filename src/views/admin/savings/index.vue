@@ -62,18 +62,19 @@ import Pagination from '../../../components/Pagination.vue';
             <tbody>
               <tr>
                 <td>123123</td>
-                <td>Muhammad Marchel</td>
+                <td>Meita Regina Prayitno</td>
                 <td>Blue</td>
                 <td class="text-end">Rp. 50.000.000</td>
                 <td class="text-center">
-                  <button type="button" class="btn btn-info btn-sm waves-effect btn-label waves-light">
+                  <RouterLink to="/tabungan/detail/1" type="button" class="btn btn-info btn-sm waves-effect btn-label waves-light">
                     <i class="bx bx-search label-icon"></i>
-                    Lihat</button>
+                    Lihat</RouterLink>
                 </td>
                 <td class="text-center">
-                  <button type="button" class="btn btn-success btn-sm waves-effect btn-label waves-light">
+                  
+                  <RouterLink to="/tabungan/setor/1" type="button" class="btn btn-success btn-sm waves-effect btn-label waves-light">
                     <i class="bx bx-navigation label-icon"></i>
-                    Setor</button>
+                    Setor</RouterLink>
                 </td>
               </tr>
             </tbody>

@@ -3789,9 +3789,7 @@ div.dataTables_wrapper div.dataTables_info {
   background-size: cover;
   background-repeat: no-repeat;
 }
-.auth-bg .bg-overlay {
-  opacity: 0.9;
-}
+
 @media (min-width: 768px) {
   .auth-bg {
     height: 100vh;
@@ -4823,7 +4821,7 @@ body[data-layout="horizontal"] .chat-conversation {
   border: 1px solid var(--bs-border-color);
 }
 .pricing-tab-box .nav-link.active {
-  border: 1px solid #5156be !important;
+  border: 1px solid #4ba6ef !important;
   background: 0 0;
   padding: 16px 20px;
 }
