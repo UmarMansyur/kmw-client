@@ -19,6 +19,25 @@
         </div>
       </div>
       <div class="mb-3">
+        <label for="gender">Jenis Kelamin: </label>
+        <div class="form-check mb-3 ">
+          <div class="row">
+            <div class="col-md-6 col-lg-3">
+              <input class="form-check-input" type="radio" name="formRadios" id="male">
+              <label class="form-check-label" for="male">
+                Laki-laki
+              </label>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <input class="form-check-input" type="radio" name="formRadios" id="female">
+              <label class="form-check-label" for="female">
+                Perempuan
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
         <label class="form-label" for="file">File:</label>
         <input class="form-control" type="file" id="file" />
         <small class="text-muted fst-italic">File: KK, Akte Kelahiran, KTP (Wajib)</small>

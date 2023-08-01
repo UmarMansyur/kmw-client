@@ -4,9 +4,9 @@
       <div id="sidebar-menu">
         <ul class="metismenu list-unstyled" id="side-menu">
           <li class="text-center mt-2" id="thumbnail">
-            <img src="/images/users/avatar-2.jpg" alt="thumbnail" class="img-thumbnail rounded-circle" width="90">
-            <h5 class="mt-3 mb-1 text-white">Anis Sulalah</h5>
-            <p class="text-white font-size-14">Administrator</p>
+            <img :src="getUser.thumbnail" alt="thumbnail" class="img-thumbnail rounded-circle" width="90">
+            <h5 class="mt-3 mb-1 text-white">{{getUser.name}}</h5>
+            <p class="text-white font-size-14">{{ getUser.role }}</p>
             <hr class="text-white">
           </li>
           <li class="menu-title">Menu</li>
@@ -69,6 +69,8 @@ declare const feather: any;
 
 <script setup lang="ts">
 import { onMounted } from "vue";
+import { useSessionStore } from "../stores/session";
+const { getUser } = useSessionStore();
 onMounted(() => {
   feather.replace();
   $("#side-menu").metisMenu({

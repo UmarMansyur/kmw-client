@@ -15,7 +15,7 @@
               </div>
               <div class="col-xl">
                 <div class="text-muted">
-                  <p class="mb-2">Anis Sulalah</p>
+                  <p class="mb-2">{{ getUser.name }}</p>
                 </div>
               </div>
             </div>
@@ -30,7 +30,7 @@
               </div>
               <div class="col-xl">
                 <div class="text-muted">
-                  <p class="mb-2">Administrator</p>
+                  <p class="mb-2">{{ getUser.role }}</p>
                 </div>
               </div>
             </div>
@@ -44,7 +44,7 @@
               </div>
               <div class="col-xl">
                 <div class="text-muted">
-                  <p class="mb-2">085231339223</p>
+                  <p class="mb-2">{{ getUser.phone }}</p>
                 </div>
               </div>
             </div>
@@ -58,7 +58,7 @@
               </div>
               <div class="col-xl">
                 <div class="text-muted">
-                  <p class="mb-2">admin@gmail.com</p>
+                  <p class="mb-2">{{ getUser.email }}</p>
                 </div>
               </div>
             </div>
@@ -72,7 +72,7 @@
               </div>
               <div class="col-xl">
                 <div class="text-muted">
-                  <p class="mb-2">Perempuan</p>
+                  <p class="mb-2">{{ getUser.gender }}</p>
                 </div>
               </div>
             </div>
@@ -86,14 +86,22 @@
               </div>
               <div class="col-xl">
                 <div class="text-muted">
-                  <p class="mb-2">Tlanakan, Pamekasan</p>
+                  <p class="mb-2">{{ getUser.address }}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- end card body -->
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+  defineProps({
+    getUser: {
+      type: Object,
+      required: true
+    }
+  });
+</script>

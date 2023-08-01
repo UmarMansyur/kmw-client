@@ -20,7 +20,7 @@
                           <i class="bx bx-pencil"></i> Ubah Data Diri
                         </button>
                       </div>
-                      <h5 class="font-size-16 mb-1">Anis Sulalah</h5>
+                      <h5 class="font-size-16 mb-1">getUser.thumbnail</h5>
                       <p class="text-muted font-size-13">Administrator</p>
                       <div class="d-flex flex-wrap align-items-start gap-2 gap-lg-3 text-muted font-size-13">
                         <div>

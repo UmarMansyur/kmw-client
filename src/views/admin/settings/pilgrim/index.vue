@@ -1,7 +1,32 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import Parent from '../../../../components/Parent.vue';
 import BreadCrumb from '../../../../components/BreadCrumb.vue';
 import Pagination from '../../../../components/Pagination.vue';
+import usePagination from '../../../../composables/pagination';
+const query = ref<string>('');
+
+const {
+  startNumber,
+  result,
+  totalData,
+  currentPage,
+  totalPage,
+  pageList,
+  search,
+  changeLimit,
+  isFirstPage,
+  isLastPage,
+  nextPage,
+  prevPage,
+  goToPage,
+  fetchData,
+} = usePagination("/pilgrims", '', query);
+
+onMounted(async ()=> {
+  
+  await fetchData();
+})
 </script>
 <template>
   <Parent>
@@ -88,6 +113,7 @@ import Pagination from '../../../../components/Pagination.vue';
         </div>
       </div>
     </div>
-    <Pagination />
+    <Pagination :current-page="currentPage" :is-first-page="isFirstPage" :is-last-page="isLastPage" :go-to="goToPage"
+      :next-page="nextPage" :page-list="pageList" :total-page="totalPage" :prev-page="prevPage" :total-data="totalData" />
   </Parent>
 </template>

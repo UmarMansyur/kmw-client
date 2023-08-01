@@ -4,6 +4,65 @@ import BreadCrumb from '../../../../components/BreadCrumb.vue';
 import Pagination from '../../../../components/Pagination.vue';
 import Modal from '../../../../components/Modal.vue';
 import Form from './Form.vue';
+import usePagination from '../../../../composables/pagination';
+import DisplayLimit from '../../../../components/DisplayLimit.vue';
+import { onMounted, ref } from 'vue';
+import { convertToRp } from '../../../../helpers/handleEvent';
+import Sweet from '../../../../helpers/sweetalert2';
+import useApi from '../../../../composables/api';
+import Notify from '../../../../helpers/notify';
+const { deleteResource, getResource } = useApi();
+
+
+const query = ref<string>('');
+
+const {
+  startNumber,
+  result,
+  totalData,
+  currentPage,
+  totalPage,
+  pageList,
+  changeLimit,
+  isFirstPage,
+  isLastPage,
+  nextPage,
+  prevPage,
+  goToPage,
+  fetchData,
+} = usePagination("/saving-categories", '', query);
+
+onMounted(async () => {
+  await fetchData();
+});
+
+const getLimit = (value: number) => {
+  changeLimit(value);
+}
+
+const loadData = async () => {
+  await fetchData();
+}
+
+const destroy = (id: string) => {
+  Sweet.confirm('Apakah anda yakin ingin menghapus data ini?', async () => {
+    const response = await deleteResource(`/saving-categories/${id}`);
+    if(response) {
+      Notify.success('Berhasil menghapus data');
+      await fetchData();
+    }
+  })
+}
+
+
+const saving_category = ref<any>({});
+const getSavingCategories = async (id: string) => {
+  const response = await getResource('/saving-categories/' + id);
+  if(response) {
+    saving_category.value = response.data;
+  }
+}
+
 </script>
 <template>
   <Parent>
@@ -11,18 +70,7 @@ import Form from './Form.vue';
     <div class="row">
       <div class="col-md-5 col-12 d-none d-lg-block">
         <div class="form-group row">
-          <label for="search" class="col-md-2 col-4 col-form-label">Tampilkan:
-          </label>
-          <div class="col-md-3 col-8">
-            <div class="input-group mb-3">
-              <select class="form-select">
-                <option value="1">10</option>
-                <option value="2">25</option>
-                <option value="3">50</option>
-                <option value="4">100</option>
-              </select>
-            </div>
-          </div>
+          <DisplayLimit @limit="getLimit"></DisplayLimit>
         </div>
       </div>
       <div class="col-md-3" />
@@ -35,13 +83,13 @@ import Form from './Form.vue';
               <input type="text" class="form-control" placeholder="Masukkan kata kunci" />
               <div class="input-group-append">
                 <button class="btn btn-info" type="button">
-                  <i class="bx bx-search-alt" />
+                  <i class="bx bx-search-alt"></i>
                 </button>
                 <button class="btn btn-primary ms-2" type="button" data-bs-toggle="modal" data-bs-target="#dinamyc-modal">
-                  <i class="bx bx-plus" /> Tambah
+                  <i class="bx bx-plus"></i> Tambah
                 </button>
                 <Modal title="Tambah Kategori">
-                  <Form/>
+                  <Form :data="saving_category" @load-data="loadData()" />
                 </Modal>
               </div>
             </div>
@@ -66,17 +114,17 @@ import Form from './Form.vue';
               </tr>
             </thead>
             <tbody class="align-middle">
-              <tr>
-                <td class="text-center">1</td>
-                <td>Blue</td>
-                <td>Rp. 35.000.000</td>
+              <tr v-for="(data, i) in result" :key="data.i">
+                <td class="text-center">{{ startNumber + i }}</td>
+                <td>{{ data.name }}</td>
+                <td>{{ convertToRp(data.limit) }}</td>
                 <td class="text-center">
-                  <button class="btn btn-info">
+                  <button class="btn btn-info" @click="getSavingCategories(data.saving_category_id)" data-bs-target="#dinamyc-modal" data-bs-toggle="modal">
                     <i class="bx bx-pencil"></i> Edit
                   </button>
                 </td>
                 <td class="text-center">
-                  <button class="btn btn-danger">
+                  <button class="btn btn-danger" @click="destroy(data.saving_category_id)">
                     <i class="bx bx-trash"></i> Hapus
                   </button>
                 </td>
@@ -86,6 +134,7 @@ import Form from './Form.vue';
         </div>
       </div>
     </div>
-    <Pagination />
+    <Pagination :current-page="currentPage" :is-first-page="isFirstPage" :is-last-page="isLastPage" :go-to="goToPage"
+      :next-page="nextPage" :page-list="pageList" :total-page="totalPage" :prev-page="prevPage" :total-data="totalData" />
   </Parent>
 </template>
