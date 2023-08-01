@@ -119,12 +119,12 @@ const getSavingCategories = async (id: string) => {
                 <td>{{ data.name }}</td>
                 <td>{{ convertToRp(data.limit) }}</td>
                 <td class="text-center">
-                  <button class="btn btn-info" @click="getSavingCategories(data.saving_category_id)" data-bs-target="#dinamyc-modal" data-bs-toggle="modal">
+                  <button class="btn btn-sm btn-info" @click="getSavingCategories(data.saving_category_id)" data-bs-target="#dinamyc-modal" data-bs-toggle="modal">
                     <i class="bx bx-pencil"></i> Edit
                   </button>
                 </td>
                 <td class="text-center">
-                  <button class="btn btn-danger" @click="destroy(data.saving_category_id)">
+                  <button class="btn btn-sm btn-danger" @click="destroy(data.saving_category_id)">
                     <i class="bx bx-trash"></i> Hapus
                   </button>
                 </td>

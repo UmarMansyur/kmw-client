@@ -4,7 +4,7 @@
       <div id="sidebar-menu">
         <ul class="metismenu list-unstyled" id="side-menu">
           <li class="text-center mt-2" id="thumbnail">
-            <img :src="getUser.thumbnail" alt="thumbnail" class="img-thumbnail rounded-circle" width="90">
+            <img :src="getUser.thumbnail" alt="thumbnail" class="img-thumbnail rounded-circle avatar-xl" width="90">
             <h5 class="mt-3 mb-1 text-white">{{getUser.name}}</h5>
             <p class="text-white font-size-14">{{ getUser.role }}</p>
             <hr class="text-white">
