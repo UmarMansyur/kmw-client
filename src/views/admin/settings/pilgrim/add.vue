@@ -1,29 +1,3 @@
-<script setup lang="ts">
-import Parent from '../../../../components/Parent.vue';
-import BreadCrumb from '../../../../components/BreadCrumb.vue';
-import FormPilgrim from './formpilgrims.vue';
-import FormFilePilgrim from './formfilepilgrims.vue';
-import FormBankPilgrim from './formbankpilgrims.vue';
-
-import { onMounted } from 'vue';
-
-
-onMounted(async () => {
-  $("#basic-pills-wizard").bootstrapWizard({
-    tabClass: "nav nav-pills nav-justified",
-  });
-});
-
-
-
-
-
-</script>
-
-<script lang="ts">
-declare const $: any;
-</script>
-
 <template>
   <Parent>
     <BreadCrumb title="Tambah Jamaah" role="Administrator" />
@@ -43,7 +17,6 @@ declare const $: any;
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
-
           <div class="card-body">
             <div id="basic-pills-wizard" class="twitter-bs-wizard">
               <ul class="twitter-bs-wizard-nav">
@@ -71,8 +44,8 @@ declare const $: any;
                 </li>
               </ul>
               <div class="tab-content twitter-bs-wizard-tab-content">
-                <FormPilgrim/>
-                <FormFilePilgrim/>
+                <FormPilgrim @next="getBiodata"/>
+                <FormFilePilgrim @next="getFile"/>
                 <FormBankPilgrim/>
               </div>
             </div>
@@ -82,6 +55,34 @@ declare const $: any;
     </div>
   </Parent>
 </template>
+
+<script setup lang="ts">
+import Parent from '../../../../components/Parent.vue';
+import BreadCrumb from '../../../../components/BreadCrumb.vue';
+import FormPilgrim from './formpilgrims.vue';
+import FormFilePilgrim from './formfilepilgrims.vue';
+import FormBankPilgrim from './formbankpilgrims.vue';
+
+import { onMounted } from 'vue';
+
+onMounted(async () => {
+  $("#basic-pills-wizard").bootstrapWizard({
+    tabClass: "nav nav-pills nav-justified",
+  });
+});
+
+const getBiodata = (obj: any) => {
+  console.log(obj);
+}
+
+const getFile = (obj: any) => {
+  console.log(obj);
+}
+</script>
+
+<script lang="ts">
+declare const $: any;
+</script>
 
 
 

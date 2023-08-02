@@ -9,7 +9,8 @@
         <div class="col-lg-6">
           <div class="mb-3">
             <label for="haji" class="form-label font-size-13 text-muted">Kategori Tabungan: </label>
-            <select class="form-control" data-trigger name="haji" id="haji" placeholder="Pilih Jenis Kategori Tabungan">
+            <select class="form-control" data-trigger name="haji" id="haji" placeholder="Pilih Jenis Kategori Tabungan"
+              v-model="saving_category_id">
               <option v-for="category in categories" :key="category.saving_category_id"
                 :value="category.saving_category_id">
                 {{ category.name }} - {{ convertToRp(category.limit) }}
@@ -21,7 +22,7 @@
           <div class="mb-3">
             <label for="bank-name" class="form-label font-size-13 text-muted">Nama Bank: </label>
             <select class="form-control" data-trigger name="bank-name" id="bank-name"
-              placeholder="Pilih Jenis Kategori Tabungan">
+              placeholder="Pilih Jenis Kategori Tabungan" v-model="bank_name">
               <option value="bni">Bank Negara Indonesia</option>
               <option value="bri">Bank Rakyat Indonesia</option>
               <option value="bca">Bank Central Asia</option>
@@ -36,18 +37,20 @@
       <div class="row mb-3">
         <div class="col-lg-6">
           <label for="bank-account" class="form-label font-size-13 text-muted">Nomor Rekening: </label>
-          <input type="text" class="form-control" id="bank-account" placeholder="Masukkan Nomor Rekening">
+          <input type="text" class="form-control" id="bank-account" placeholder="Masukkan Nomor Rekening"
+            v-model="bank_account">
         </div>
         <div class="col-lg-6">
           <label for="bank-account-name" class="form-label font-size-13 text-muted">Nama Pemilik Rekening: </label>
-          <input type="text" class="form-control" id="bank-account-name" placeholder="Masukkan Nama Pemilik Rekening">
+          <input type="text" class="form-control" id="bank-account-name" placeholder="Masukkan Nama Pemilik Rekening"
+            v-model="bank_account_name">
         </div>
       </div>
       <ul class="pager wizard twitter-bs-wizard-pager-link">
         <li class="previous"><a href="javascript: void(0);" class="btn btn-success"><i
               class="bx bx-chevron-left me-1"></i> Sebelumnya</a></li>
         <li class="float-end">
-          <a href="javascript: void(0);" class="btn btn-info" data-bs-toggle="modal" data-bs-target=".confirmModal">
+          <a href="javascript: void(0);" class="btn btn-info" @click="save" :disabled="!meta.valid">
             <i class="bx bx-send font-size-16"></i> Simpan
           </a>
         </li>
@@ -64,6 +67,9 @@ declare const Choices: any;
 import { onMounted, ref } from 'vue';
 import useApi from '../../../../composables/api';
 import { convertToRp } from '../../../../helpers/handleEvent';
+import * as yup from 'yup';
+import { useField, useForm } from 'vee-validate';
+import Sweet from '../../../../helpers/sweetalert2';
 const { getResource } = useApi();
 onMounted(async () => {
   await loadCategories();
@@ -85,6 +91,40 @@ const categories = ref<any[]>([]);
 const loadCategories = async () => {
   const response = await getResource('/saving-categories?limit=1000');
   categories.value = response.data.data;
+};
+
+const schema = yup.object().shape({
+  saving_category_id: yup.string().required().min(3),
+  bank_name: yup.string().required().min(3),
+  bank_account: yup.string().required().min(3),
+  bank_account_name: yup.string().required().min(3),
+});
+
+const { meta } = useForm({
+  validationSchema: schema,
+  initialValues: {
+    saving_category_id: '',
+    bank_name: '',
+    bank_account: '',
+    bank_account_name: '',
+  }
+});
+
+const { value: saving_category_id } = useField<string>('saving_category_id');
+const { value: bank_name } = useField<string>('bank_name');
+const { value: bank_account } = useField<string>('bank_account');
+const { value: bank_account_name } = useField<string>('bank_account_name');
+
+const save = async () => {
+  Sweet.confirm('Apakah Anda yakin ingin menyimpan data ini?', async () => {
+    const data = {
+      saving_category_id: saving_category_id.value,
+      bank_name: bank_name.value,
+      bank_account: bank_account.value,
+      bank_account_name: bank_account_name.value,
+    };
+    console.log(data);
+  });
 };
 
 </script>

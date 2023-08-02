@@ -71,7 +71,9 @@
     </form>
     <ul class="pager wizard twitter-bs-wizard-pager-link">
       <li class="next">
-        <button type="button" class="btn btn-success" v-show="meta.valid" @click="()=> emit('next')"> Selanjutnya
+        <button type="button" class="btn btn-success" 
+
+        @click="next"> Selanjutnya
           <i class="bx bx-chevron-right ms-1"></i>
         </button>
       </li>
@@ -85,10 +87,10 @@ import * as yup from 'yup';
 
 const schema = yup.object().shape({
   username: yup.string().required().min(3),
-  nik: yup.string().required().min(3).max(13),
-  kk: yup.string().required().min(3).max(13),
-  birth_day: yup.string().required().min(3).max(10),
-  gender: yup.string().required().min(3).max(10),
+  nik: yup.string().required().min(3).max(25),
+  kk: yup.string().required().min(3).max(25),
+  birth_day: yup.string().required().min(3),
+  gender: yup.string().required().min(3),
   phone: yup.string().required().min(3).max(13),
   email: yup.string().required().min(3).max(1000),
   password: yup.string().required().min(3),
@@ -122,5 +124,19 @@ const { value: address } = useField<string>('address');
 
 const emit = defineEmits(['next']);
 
+const next = () => {
+  const data = {
+    name: username.value,
+    nik: nik.value,
+    kk: kk.value,
+    birth_day: birth_day.value,
+    gender: gender.value,
+    phone: phone.value,
+    email: email.value,
+    password: password.value,
+    address: address.value
+  }
+  emit('next', data);
+}
 
 </script>

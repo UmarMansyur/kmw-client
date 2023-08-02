@@ -2,7 +2,7 @@ import Notify from "../helpers/notify";
 import router from "../router";
 import useApi from "./api";
 import { ref } from "vue";
-const { checkResponse, getResource } = useApi();
+const { checkResponse, getResource, putResource } = useApi();
 
 export default function useToken() {
     const isAdmin = ref<Boolean>(false);
@@ -42,13 +42,13 @@ export default function useToken() {
 
     async function validateToken() {
         try {
-            if (getAccessToken()) {
-                const payload = JSON.parse(window.atob((getAccessToken())!.split(".")[1]));
-                const expired = payload.exp;
-                const now = Date.now() / 1000;
-                if (now > expired) {
-                    router.replace({ name: 'Login' });
-                }
+            const payload = JSON.parse(window.atob((getAccessToken())!.split(".")[1]));
+            const expired = payload.exp;
+            const now = Date.now() / 1000;
+            if (now < expired) {
+                await clearToken();
+                await refresh();
+                router.replace({ name: 'Login' });
             }
         } catch (error: any) {
             console.log(error);
@@ -58,11 +58,24 @@ export default function useToken() {
 
     async function refresh() {
         try {
-            const response = await getResource('/auth/refresh');
-            await checkResponse(response);
-            await setToken(response.data.token);
-            await decodeToken();
+            console.log(getAccessToken());
+            // if(getAccessToken()) {
+            //     const response = await fetch(import.meta.env.VITE_API_KMW + '/auth/refresh', {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             'Authorization': `Bearer ${getAccessToken()}`
+            //         }
+            //     });
+            //     await checkResponse(response);
+            //     const data = await response.json();
+            //     console.log(data);
+            //     await setToken(data.data.token);
+            //     await decodeToken();
+            // }
         } catch (error: any) {
+            clearToken();
+            router.replace({ name: 'Login' });
             Notify.error(error.message);
         }
     }
