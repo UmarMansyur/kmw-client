@@ -9,7 +9,6 @@ import useApi from '../../../../composables/api';
 const { getResource } = useApi();
 
 const schema = yup.object().shape({
-  user_account_id: yup.string(),
   username: yup.string().required().min(4).max(100),
   password: yup.string().required().min(4).max(100),
   confirmation_password: yup.string().required().min(4).max(100),
@@ -27,9 +26,9 @@ const schema = yup.object().shape({
 const { meta } = useForm({
   validationSchema: schema,
   initialValues: {
-    user_account_id: '',
     username: '',
     password: '',
+    confirmation_password: '',
     saving_category_id: '',
     bank_name: '',
     no_rekening: '',
@@ -38,25 +37,26 @@ const { meta } = useForm({
     gender: '',
     phone: '',
     address: '',
-    email: ''
+    email: '',
+
   }
 });
 
-const { value: user_account_id } = useField<string>('');
-const { value: saving_category_id } = useField<string>('');
-const { value: bank_name } = useField<string>('');
-const { value: no_rekening } = useField<string>('');
-const { value: nik } = useField<string>('');
-const { value: no_kk } = useField<string>('');
-const { value: gender } = useField<string>('');
-const { value: phone } = useField<string>('');
-const { value: address } = useField<string>('');
-const { value: username } = useField<string>('');
-const { value: password } = useField<string>('');
-const { value: confirmation_password } = useField<string>('');
-const { value: email } = useField<string>('');
+const { value:saving_category_id } = useField<string>('');
+const { value:bank_name } = useField<string>('');
+const { value:no_rekening } = useField<string>('');
+const { value:nik } = useField<string>('');
+const { value:no_kk } = useField<string>('');
+const { value:gender } = useField<string>('');
+const { value:phone } = useField<string>('');
+const { value:address } = useField<string>('');
+const { value:username } = useField<string>('');
+const { value:password } = useField<string>('');
+const { value:confirmation_password } = useField<string>('');
+const { value:email } = useField<string>('');
 onMounted(async () => {
   await loadCategories();
+  console.log(username.value);
 });
 
 const categories = ref<any[]>([]);
@@ -88,31 +88,31 @@ const loadCategories = async () => {
             <div class="row">
               <div class="col-6 mb-3">
                 <label for="name" class="form-label">Nama:</label>
-                <input type="text" name="name" id="name" class="form-control" placeholder="Nama Jamaah" required
+                <input type="text" name="name" id="name" class="form-control" placeholder="Nama Jamaah"
                   v-model="username">
               </div>
               <div class="col-6">
                 <label for="email" class="form-label">Email:</label>
-                <input type="email" name="email" id="email" class="form-control" placeholder="Email" required
+                <input type="email" name="email" id="email" class="form-control" placeholder="Email"
                   v-model="email">
               </div>
             </div>
             <div class="row mb-3">
               <div class="col-6">
                 <label for="phone" class="form-label">No. Telepon:</label>
-                <input type="text" name="phone" id="phone" class="form-control" placeholder="No. Telepon" required
+                <input type="text" name="phone" id="phone" class="form-control" placeholder="No. Telepon"
                   v-model="phone">
               </div>
               <div class="col-6">
                 <label for="password" class="form-label">Password:</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="Password" required
+                <input type="password" name="password" id="password" class="form-control" placeholder="Password"
                   v-model="password">
               </div>
             </div>
             <div class="row mb-3">
               <div class="col-6">
                 <label for="gender" class="form-label">Jenis Kelamin: </label>
-                <select name="gender" id="gender" class="form-select" required v-model="gender">
+                <select name="gender" id="gender" class="form-select" v-model="gender">
                   <option value="male">Laki-Laki</option>
                   <option value="female">Perempuan</option>
                 </select>
@@ -120,22 +120,45 @@ const loadCategories = async () => {
               <div class="col-6">
                 <label for="password_confirmation" class="form-label">Konfirmasi Password:</label>
                 <input type="password" name="password_confirmation" id="password_confirmation" class="form-control"
-                  placeholder="Konfirmasi Password" required v-model="confirmation_password">
+                  placeholder="Konfirmasi Password" v-model="confirmation_password">
               </div>
             </div>
             <div class="row">
               <div class="col-6">
                 <label for="address" class="form-label">Alamat:</label>
-                <input type="text" class="form-control" id="address" name="address" placeholder="Alamat" required
+                <input type="text" class="form-control" id="address" name="address" placeholder="Alamat"
                   v-model="address">
               </div>
               <div class="col-6">
                 <label for="saving_categories" class="form-label">Jenis Tabungan:</label>
-                <select name="saving_categories" id="saving_categories" class="form-select" required v-model="saving_category_id">
+                <select name="saving_categories" id="saving_categories" class="form-select" v-model="saving_category_id">
                   <option value="" disabled>Pilih Jenis Tabungan</option>
                   <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
                 </select>
 
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-mb-6 col-lg-6 mb-3">
+                <label for="nik" class="form-label">NIK:</label>
+                <input type="text" class="form-control" id="nik" name="nik" placeholder="NIK" v-model="nik">
+              </div>
+              <div class="col-mb-6 col-lg-6 mb-3">
+                <label for="no_kk" class="form-label">No. KK:</label>
+                <input type="text" class="form-control" id="no_kk" name="no_kk" placeholder="No. KK"
+                  v-model="no_kk">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-mb-6 col-lg-6 mb-3">
+                <label for="bank_name" class="form-label">Nama Bank:</label>
+                <input type="text" class="form-control" id="bank_name" name="bank_name" placeholder="Nama Bank"
+                  v-model="bank_name">
+              </div>
+              <div class="col-mb-6 col-lg-6 mb-3">
+                <label for="bank_account_number" class="form-label">No. Rekening:</label>
+                <input type="text" class="form-control" id="bank_account_number" name="bank_account_number"
+                  placeholder="No. Rekening" v-model="no_rekening">
               </div>
             </div>
             <div class="row my-3">
