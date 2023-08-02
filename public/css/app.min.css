@@ -3329,7 +3329,7 @@ a.ck.ck-button:not(.ck-disabled):hover {
   height: 56px;
   line-height: 54px;
   border: 1px solid rgba(81, 86, 190, 0.2);
-  color: #5156be;
+  color: #2c302e;
   text-align: center;
   border-radius: 50%;
   position: relative;
@@ -3389,9 +3389,9 @@ a.ck.ck-button:not(.ck-disabled):hover {
   background-color: transparent;
 }
 .twitter-bs-wizard .twitter-bs-wizard-nav .nav-link.active .step-icon {
-  background-color: rgba(81, 86, 190, 0.2);
-  color: #5156be;
-  border-color: rgba(81, 86, 190, 0.2);
+  background-color: #4ba6ef;
+  color: white;
+  border-color: #4ba6ef;
 }
 .twitter-bs-wizard .twitter-bs-wizard-pager-link {
   padding-top: 24px;
