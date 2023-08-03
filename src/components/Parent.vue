@@ -11,7 +11,7 @@ import Header from './Header.vue';
     <div class="main-content">
       <div class="page-content">
         <div class="container-fluid">
-        <slot></slot>
+          <slot></slot>
         </div>
 
       </div>

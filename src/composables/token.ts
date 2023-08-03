@@ -1,8 +1,8 @@
+import axios from "axios";
 import Notify from "../helpers/notify";
-import router from "../router";
 import useApi from "./api";
 import { ref } from "vue";
-const { checkResponse, getResource, putResource } = useApi();
+const { checkResponse, getResource } = useApi();
 
 export default function useToken() {
     const isAdmin = ref<Boolean>(false);
@@ -45,10 +45,8 @@ export default function useToken() {
             const payload = JSON.parse(window.atob((getAccessToken())!.split(".")[1]));
             const expired = payload.exp;
             const now = Date.now() / 1000;
-            if (now < expired) {
-                await clearToken();
+            if (now > expired) {
                 await refresh();
-                router.replace({ name: 'Login' });
             }
         } catch (error: any) {
             console.log(error);
@@ -58,24 +56,16 @@ export default function useToken() {
 
     async function refresh() {
         try {
-            console.log(getAccessToken());
-            // if(getAccessToken()) {
-            //     const response = await fetch(import.meta.env.VITE_API_KMW + '/auth/refresh', {
-            //         method: 'POST',
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //             'Authorization': `Bearer ${getAccessToken()}`
-            //         }
-            //     });
-            //     await checkResponse(response);
-            //     const data = await response.json();
-            //     console.log(data);
-            //     await setToken(data.data.token);
-            //     await decodeToken();
-            // }
+            const { data } = await axios.post(import.meta.env.VITE_API_KMW + '/auth/refresh', {}, {
+                headers: {
+                    "Authorization": "Bearer " + getAccessToken(),
+                }
+            });
+            await setToken(data.data.token);
+            await decodeToken();
+            return;
         } catch (error: any) {
             clearToken();
-            router.replace({ name: 'Login' });
             Notify.error(error.message);
         }
     }

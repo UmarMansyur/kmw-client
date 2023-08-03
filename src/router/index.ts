@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useSessionStore } from '../stores/session';
-import useToken from '../composables/token';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -66,7 +65,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/pengaturan/jamaah/edit/:id',
     name: 'Edit jamaah',
-    component: () => import('../views/admin/settings/pilgrim/edit.vue'),
+    component: () => import('../views/admin/settings/pilgrim/add.vue'),
   },
   {
     path: '/pengaturan/profile',
@@ -115,7 +114,6 @@ const router = createRouter({
 router.beforeEach(async (to) => {
   document.title = to.name as string;
   const { setUser, getUser } = useSessionStore();
-  const { decodeToken } = useToken();
   if (to.name != 'Login' && (!sessionStorage.getItem('token') || sessionStorage.getItem('token')!.length <= 13)) {
     return { path: '/login' };
   }
@@ -123,7 +121,7 @@ router.beforeEach(async (to) => {
   if (sessionStorage.getItem('token') && to.name == 'Login') {
     return { path: '/' };
   }
-  if (to.name != 'login' && to.name != 'NotFound') {
+  if (sessionStorage.getItem('token')  && to.name != 'login' && to.name != 'NotFound') {
     if (getUser.id === 0) {
       await setUser();
     }

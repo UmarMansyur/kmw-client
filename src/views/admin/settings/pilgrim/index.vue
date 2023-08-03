@@ -4,17 +4,21 @@ import Parent from '../../../../components/Parent.vue';
 import BreadCrumb from '../../../../components/BreadCrumb.vue';
 import Pagination from '../../../../components/Pagination.vue';
 import usePagination from '../../../../composables/pagination';
+import { encrypt } from '../../../../helpers/crypto';
+import Sweet from '../../../../helpers/sweetalert2';
+import useApi from '../../../../composables/api';
+import Notify from '../../../../helpers/notify';
+import { isDisableLayer, isEnableLayer } from '../../../../helpers/handleEvent';
+const { deleteResource } = useApi();
 const query = ref<string>('');
 
+
 const {
-  startNumber,
   result,
   totalData,
   currentPage,
   totalPage,
   pageList,
-  search,
-  changeLimit,
   isFirstPage,
   isLastPage,
   nextPage,
@@ -23,10 +27,21 @@ const {
   fetchData,
 } = usePagination("/pilgrims", '', query);
 
-onMounted(async ()=> {
-  
+onMounted(async () => {
+  isEnableLayer();
   await fetchData();
-})
+  isDisableLayer();
+});
+
+const deleteData = async (id: string) => {
+  Sweet.confirm('Apakah anda yakin ingin menghapus data ini?', async () => {
+    const response = await deleteResource('/users/' + id);
+    if (response) {
+      Notify.success('Data berhasil dihapus');
+      await fetchData();
+    }
+  });
+}
 </script>
 <template>
   <Parent>
@@ -75,7 +90,6 @@ onMounted(async ()=> {
           <table class="table table-hover table-bordered">
             <thead class="align-middle">
               <tr>
-                <th class="col text-center" rowspan="2">No</th>
                 <th colspan="5" class="text-center">Jamaah</th>
                 <th colspan="2" class="text-center">Aksi</th>
               </tr>
@@ -90,23 +104,27 @@ onMounted(async ()=> {
               </tr>
             </thead>
             <tbody class="align-middle">
-              <tr>
-                <td class="text-center">1</td>
-                <td>29 Juli 2023</td>
-                <td>123123</td>
-                <td>Meita Regina Prayitno</td>
-                <td class="text-center">Blue</td>
-                <td>Rombasan Pragaan Sumenep</td>
+              <tr v-for="(data, i) in result" :key="i">
+                <td class="text-center">{{ data.created_at.slice(0, 10) }}</td>
+                <td class="text-center">{{ data.kode }}</td>
+                <td>{{ data.username }}</td>
                 <td class="text-center">
-                  <RouterLink to="/pengaturan/jamaah/edit/1" class="btn btn-info">
+                  <span class="badge bg-success font-size-12">{{ data.name }}</span>
+                </td>
+                <td>{{ data.address }}</td>
+                <td class="text-center">
+                  <RouterLink :to="`/pengaturan/jamaah/edit/${encrypt(data.user_account_id.toString())}`" class="btn btn-info">
                     <i class="bx bx-pencil"></i> Edit
                   </RouterLink>
                 </td>
                 <td class="text-center">
-                  <button class="btn btn-danger">
+                  <button class="btn btn-danger" @click="deleteData(data.user_account_id)">
                     <i class="bx bx-trash"></i> Hapus
                   </button>
                 </td>
+              </tr>
+              <tr v-if="result.length === 0">
+                <td colspan="7" class="text-center">Data tidak ditemukan</td>
               </tr>
             </tbody>
           </table>
@@ -114,6 +132,6 @@ onMounted(async ()=> {
       </div>
     </div>
     <Pagination :current-page="currentPage" :is-first-page="isFirstPage" :is-last-page="isLastPage" :go-to="goToPage"
-      :next-page="nextPage" :page-list="pageList" :total-page="totalPage" :prev-page="prevPage" :total-data="totalData" />
+      :next-page="nextPage" :page-list="pageList" :total-page="totalPage" :prev-page="prevPage" :total-data="totalData" v-if="result.length > 0" />
   </Parent>
 </template>

@@ -2,6 +2,33 @@
 import Parent from '../../../components/Parent.vue';
 import BreadCrumb from '../../../components/BreadCrumb.vue';
 import Pagination from '../../../components/Pagination.vue';
+import { onMounted, ref } from 'vue';
+import usePagination from '../../../composables/pagination';
+import { convertToRp, isDisableLayer, isEnableLayer } from '../../../helpers/handleEvent';
+import { encrypt } from '../../../helpers/crypto';
+const query = ref<string>('');
+
+const {
+  result,
+  totalData,
+  currentPage,
+  totalPage,
+  pageList,
+  isFirstPage,
+  isLastPage,
+  nextPage,
+  prevPage,
+  goToPage,
+  fetchData,
+} = usePagination("/admin/tabungan", '', query);
+
+onMounted(async () => {
+  isEnableLayer();
+  await fetchData();
+  isDisableLayer();
+});
+
+
 </script>
 <template>
   <Parent>
@@ -60,19 +87,19 @@ import Pagination from '../../../components/Pagination.vue';
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>123123</td>
-                <td>Meita Regina Prayitno</td>
-                <td>Blue</td>
-                <td class="text-end">Rp. 50.000.000</td>
+              <tr v-for="(data, i) in result" :key="i">
+                <td>{{ data.kode }}</td>
+                <td>{{ data.username }}</td>
+                <td>{{ data.name }}</td>
+                <td class="text-end">{{ convertToRp(data.nominal) }}</td>
                 <td class="text-center">
-                  <RouterLink to="/tabungan/detail/1" type="button" class="btn btn-info btn-sm waves-effect btn-label waves-light">
+                  <RouterLink :to="`/tabungan/detail/${encrypt(data.pilgrims_id.toString())}`" type="button" class="btn btn-info btn-sm waves-effect btn-label waves-light">
                     <i class="bx bx-search label-icon"></i>
                     Lihat</RouterLink>
                 </td>
                 <td class="text-center">
                   
-                  <RouterLink to="/tabungan/setor/1" type="button" class="btn btn-success btn-sm waves-effect btn-label waves-light">
+                  <RouterLink :to="`/tabungan/setor/${encrypt(data.pilgrims_id.toString())}`" type="button" class="btn btn-success btn-sm waves-effect btn-label waves-light">
                     <i class="bx bx-navigation label-icon"></i>
                     Setor</RouterLink>
                 </td>
@@ -82,6 +109,7 @@ import Pagination from '../../../components/Pagination.vue';
         </div>
       </div>
     </div>
-    <Pagination />
+    <Pagination :current-page="currentPage" :is-first-page="isFirstPage" :is-last-page="isLastPage" :go-to="goToPage"
+      :next-page="nextPage" :page-list="pageList" :total-page="totalPage" :prev-page="prevPage" :total-data="totalData" v-if="result.length > 0" />
   </Parent>
 </template>

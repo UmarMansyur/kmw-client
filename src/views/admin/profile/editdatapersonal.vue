@@ -95,6 +95,7 @@ const updateUser = async () => {
       await postResourceFile('users/' + user.value.id, 'POST', {
         thumbnail: newImage.value,
       });
+      newImage.value = '';
     }
 
     await postResourceFile('users/' + user.value.id, 'POST', {

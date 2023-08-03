@@ -64,28 +64,29 @@ declare const Choices: any;
 </script>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import useApi from '../../../../composables/api';
 import { convertToRp } from '../../../../helpers/handleEvent';
 import * as yup from 'yup';
 import { useField, useForm } from 'vee-validate';
-import Sweet from '../../../../helpers/sweetalert2';
 const { getResource } = useApi();
 onMounted(async () => {
   await loadCategories();
   enableChoicePlugins();
 });
-
+const categories_choice = ref<any>({});
+const bank_choice = ref<any>({});
 function enableChoicePlugins() {
-  new Choices("#haji", {
+  categories_choice.value = new Choices("#haji", {
     searchEnabled: true,
     allowHTML: true,
   });
-  new Choices("#bank-name", {
+  bank_choice.value = new Choices("#bank-name", {
     searchEnabled: true,
     allowHTML: true,
   });
 }
+
 
 const categories = ref<any[]>([]);
 const loadCategories = async () => {
@@ -115,16 +116,28 @@ const { value: bank_name } = useField<string>('bank_name');
 const { value: bank_account } = useField<string>('bank_account');
 const { value: bank_account_name } = useField<string>('bank_account_name');
 
+const emit = defineEmits(['save'])
 const save = async () => {
-  Sweet.confirm('Apakah Anda yakin ingin menyimpan data ini?', async () => {
-    const data = {
+  const data = {
       saving_category_id: saving_category_id.value,
       bank_name: bank_name.value,
       bank_account: bank_account.value,
       bank_account_name: bank_account_name.value,
     };
-    console.log(data);
-  });
+  emit('save', data);
 };
+
+const props = defineProps(['data']);
+const watchProps = computed(() => props.data);
+watch(watchProps, (value) => {
+  if(value) {
+    categories_choice.value.setChoiceByValue(value.saving_category_id);
+    saving_category_id.value = value.saving_category_id;
+    bank_choice.value.setChoiceByValue(value.bank_name);
+    bank_name.value = value.bank_name;
+    bank_account.value = value.no_rekening;
+    bank_account_name.value = value.bank_account_name;
+  }
+});
 
 </script>

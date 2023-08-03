@@ -38,6 +38,7 @@
         <div class="col-lg-6 mb-3">
           <label for="gender" class="form-label">Jenis Kelamin: </label>
           <select name="gender" id="gender" class="form-select" v-model="gender">
+            <option value="" disabled> -- Pilih Jenis Kelamin -- </option>
             <option value="laki-laki">Laki-laki</option>
             <option value="perempuan">Perempuan</option>
           </select>
@@ -72,7 +73,7 @@
     <ul class="pager wizard twitter-bs-wizard-pager-link">
       <li class="next">
         <button type="button" class="btn btn-success" 
-
+        v-if="meta.valid"
         @click="next"> Selanjutnya
           <i class="bx bx-chevron-right ms-1"></i>
         </button>
@@ -83,6 +84,7 @@
 
 <script setup lang="ts">
 import { useField, useForm } from 'vee-validate';
+import { computed, watch } from 'vue';
 import * as yup from 'yup';
 
 const schema = yup.object().shape({
@@ -93,7 +95,7 @@ const schema = yup.object().shape({
   gender: yup.string().required().min(3),
   phone: yup.string().required().min(3).max(13),
   email: yup.string().required().min(3).max(1000),
-  password: yup.string().required().min(3),
+  password: yup.string().required().min(8),
   address: yup.string().required().min(3)
 });
 
@@ -138,5 +140,25 @@ const next = () => {
   }
   emit('next', data);
 }
+
+const props = defineProps(['data']);
+
+const watchProps = computed(() => {
+  return props.data;
+});
+
+watch(watchProps, (value) => {
+  if(value) {
+    username.value = value.username;
+    nik.value = value.nik;
+    kk.value = value.no_kk;
+    birth_day.value = value.birth_date
+    gender.value = value.gender;
+    phone.value = value.phone;
+    email.value = value.email;
+    password.value = value.password;
+    address.value = value.address;
+  }
+});
 
 </script>

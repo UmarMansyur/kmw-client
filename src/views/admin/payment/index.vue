@@ -2,6 +2,52 @@
 import Parent from '../../../components/Parent.vue';
 import BreadCrumb from '../../../components/BreadCrumb.vue';
 import Pagination from '../../../components/Pagination.vue';
+import { onMounted, ref } from 'vue';
+import usePagination from '../../../composables/pagination';
+import { convertToRp, isDisableLayer, isEnableLayer } from '../../../helpers/handleEvent';
+import Modal from '../../../components/Modal.vue';
+import useApi from '../../../composables/api';
+import Notify from '../../../helpers/notify';
+const { getResource, putResource } = useApi();
+
+
+const query = ref<string>('');
+const {
+  result,
+  totalData,
+  currentPage,
+  totalPage,
+  pageList,
+  isFirstPage,
+  isLastPage,
+  nextPage,
+  prevPage,
+  goToPage,
+  fetchData,
+} = usePagination("/admin/verifikasi", '', query);
+
+onMounted(async ()=> {
+  isEnableLayer();
+  await fetchData();
+  isDisableLayer();
+});
+
+const image = ref<string>('');
+
+const handleImage = async (i: any) => {
+  const response = await getResource('/admin/verifikasi/gambar/' + i);
+  image.value = import.meta.env.VITE_API_KMW + '/' + response.data.file;
+}
+
+const acceptVerification = async (i: any) => {
+  const response = await putResource('/admin/verifikasi/'+i, {
+    type: 'diverifikasi',
+  });
+  if(response) {
+    Notify.success('Berhasil memverifikasi pembayaran');
+  }
+}
+
 </script>
 <template>
   <Parent>
@@ -61,12 +107,12 @@ import Pagination from '../../../components/Pagination.vue';
               </tr>
             </thead>
             <tbody class="align-middle">
-              <tr>
-                <td>123123</td>
-                <td>Meita Regina Prayitno</td>
-                <td class="text-end">Rp. 1.000.000</td>
+              <tr v-for="(data, i) in result" :key="i">
+                <td>{{ data.kode }}</td>
+                <td>{{ data.username }}</td>
+                <td class="text-end">{{ convertToRp(data.nominal) }}</td>
                 <td class="text-center">
-                  <button type="button" class="btn btn-info waves-effect btn-label waves-light">
+                  <button type="button" class="btn btn-info waves-effect btn-label waves-light" data-bs-target="#dinamyc-modal" data-bs-toggle="modal" @click="handleImage(data.pilgrims_id)">
                     <i class="bx bx-file label-icon"></i> File</button>
                 </td>
                 <td class="text-center">
@@ -74,7 +120,7 @@ import Pagination from '../../../components/Pagination.vue';
                     <i class="bx bx-x label-icon"></i> Tolak</button>
                 </td>
                 <td class="text-center">
-                  <button type="button" class="btn btn-success waves-effect btn-label waves-light"><i class="bx bx-check-double label-icon"></i> Terima</button>
+                  <button type="button" class="btn btn-success waves-effect btn-label waves-light" @click="acceptVerification(data.pilgrims_id)"><i class="bx bx-check-double label-icon"></i> Terima</button>
                 </td>
               </tr>
             </tbody>
@@ -82,6 +128,12 @@ import Pagination from '../../../components/Pagination.vue';
         </div>
       </div>
     </div>
-    <Pagination />
+    <Modal title="Bukti Transfer">
+      <div class="text-center">
+        <img :src="image" class="img-fluid" alt="Responsive image" />
+      </div>
+    </Modal>
+    <Pagination :current-page="currentPage" :is-first-page="isFirstPage" :is-last-page="isLastPage" :go-to="goToPage"
+      :next-page="nextPage" :page-list="pageList" :total-page="totalPage" :prev-page="prevPage" :total-data="totalData" />
   </Parent>
 </template>

@@ -38,7 +38,12 @@
 
 <script setup lang="ts">
 import Parent from './Parent.vue';
-import { handleTogglePassword } from '../../helpers/handleEvent'
+import { handleTogglePassword, isDisableLayer } from '../../helpers/handleEvent'
 import useValidateLogin from '../../validations/login';
+import { onMounted } from 'vue';
 const { username, password, meta, tryLogin } = useValidateLogin();
+
+onMounted(() => {
+  isDisableLayer();
+})
 </script>

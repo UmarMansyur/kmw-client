@@ -27,7 +27,7 @@ export const useSessionStore = defineStore({
       this.name = response.username;
       this.email = response.email;
       this.role = response.type == 'admin' ? 'Administrator' : response.type;
-      this.thumbnail = import.meta.env.VITE_API_KMW + response.thumbnail;
+      this.thumbnail = import.meta.env.VITE_API_KMW +'/' + response.thumbnail;
       this.phone = response.phone;
       this.gender = response.gender;
       this.address = response.address;

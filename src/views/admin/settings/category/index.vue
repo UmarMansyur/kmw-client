@@ -7,7 +7,7 @@ import Form from './Form.vue';
 import usePagination from '../../../../composables/pagination';
 import DisplayLimit from '../../../../components/DisplayLimit.vue';
 import { onMounted, ref } from 'vue';
-import { convertToRp } from '../../../../helpers/handleEvent';
+import { convertToRp, isDisableLayer, isEnableLayer } from '../../../../helpers/handleEvent';
 import Sweet from '../../../../helpers/sweetalert2';
 import useApi from '../../../../composables/api';
 import Notify from '../../../../helpers/notify';
@@ -33,7 +33,9 @@ const {
 } = usePagination("/saving-categories", '', query);
 
 onMounted(async () => {
+  isEnableLayer();
   await fetchData();
+  isDisableLayer();
 });
 
 const getLimit = (value: number) => {

@@ -12,7 +12,17 @@ function convertToRp(value: string) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(parseInt(value)).slice(0, -3);
 }
 
+function isEnableLayer() {
+  const layer: any = document.querySelector('.layer');
+  layer.classList.remove('d-none');
+}
+
+function isDisableLayer() {
+  const layer: any = document.querySelector('.layer');
+  layer.classList.add('d-none');
+}
+
 
 export {
-  handleTogglePassword, convertToRp
+  handleTogglePassword, convertToRp, isEnableLayer, isDisableLayer
 }

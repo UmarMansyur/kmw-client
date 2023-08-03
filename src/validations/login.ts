@@ -23,22 +23,22 @@ export default function useValidateLogin() {
   const { value: password } = useField<string>('password');
 
   const tryLogin = async () => {
-    const { setToken } = useToken();
-    document.querySelector('.btn-success')!.innerHTML = '<i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading...';
-    document.querySelector('.btn-success')!.setAttribute('disabled', 'disabled');
-    const { data: response } = await axios.post(import.meta.env.VITE_API_KMW + '/auth/login', {
-      email: username.value,
-      password: password.value,
-    });
-    if (!response) {
-      document.querySelector('.btn-success')!.innerHTML = 'Login';
-      Notify.error('Gagal Login');
-      return;
+    try {
+      const { setToken } = useToken();
+      document.querySelector('.btn-success')!.innerHTML = '<i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i> Loading...';
+      document.querySelector('.btn-success')!.setAttribute('disabled', 'disabled');
+      const response = await axios.post(import.meta.env.VITE_API_KMW + '/auth/login', {
+        email: username.value,
+        password: password.value,
+      });
+      Notify.success('Berhasil Login');
+      await setToken(response.data.data.token);
+      router.replace('/');
+    } catch (error: any) {
+      Notify.error(error.message);
+      document.querySelector('.btn-success')!.innerHTML = '<i class="bx bx-lock-open font-size-16 align-middle me-2"></i> Login';
+      router.replace({ name: 'Login' });
     }
-    Notify.success('Berhasil Login');
-    setToken(response.data.token);
-
-    router.replace('/');
   };
 
   return {

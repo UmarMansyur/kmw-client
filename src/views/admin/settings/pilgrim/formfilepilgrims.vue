@@ -57,7 +57,6 @@ onMounted(async () => {
   loadCategories();
 });
 
-
 const categories = ref<any[]>([]);
 const loadCategories = async () => {
   const response = await getResource('/saving-categories');
@@ -96,7 +95,7 @@ const next = () => {
     data.ktp = ktp.value;
   }
   if (kk.value) {
-    data.kk = kk.value;
+    data.file_kk = kk.value;
   }
   if (foto.value) {
     data.foto = foto.value;
@@ -107,9 +106,9 @@ const next = () => {
   if(nikah.value) {
     data.nikah = nikah.value;
   }
-
   emit('next', data);
 }
+
 
 
 
