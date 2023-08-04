@@ -136,7 +136,7 @@ router.beforeEach(async (to) => {
   document.title = to.name as string;
   const { setUser, getUser } = useSessionStore();
 
-  if(to.name == 'Print Report') {
+  if(to.name == 'Print Report' || to.name == 'Registrasi') {
     return true;
   }
 
