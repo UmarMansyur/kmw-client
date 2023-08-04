@@ -26,7 +26,7 @@ const {
   fetchData,
 } = usePagination("/admin/verifikasi", '', query);
 
-onMounted(async ()=> {
+onMounted(async () => {
   isEnableLayer();
   await fetchData();
   isDisableLayer();
@@ -35,17 +35,58 @@ onMounted(async ()=> {
 const image = ref<string>('');
 
 const handleImage = async (i: any) => {
+  isEnableLayer();
+  declineClick.value = false;
   const response = await getResource('/admin/verifikasi/gambar/' + i);
   image.value = import.meta.env.VITE_API_KMW + '/' + response.data.file;
-}
+  const exist: any = document.getElementById('img-modal-bukti');
+  isDisableLayer();
+  if (exist) {
+    exist.src = image.value;
+    return;
+  }
+  const imageElement = document.createElement('img');
+  imageElement.src = image.value;
+  imageElement.classList.add('img-thumbnail');
+  imageElement.id = 'img-modal-bukti';
+  const dinamycModal = document.getElementById('img-center-modal');
+
+
+  dinamycModal?.appendChild(imageElement);
+};
 
 const acceptVerification = async (i: any) => {
-  const response = await putResource('/admin/verifikasi/'+i, {
+  isEnableLayer();
+  const response = await putResource('/admin/verifikasi/' + i, {
     type: 'diverifikasi',
   });
-  if(response) {
+  if (response) {
     Notify.success('Berhasil memverifikasi pembayaran');
   }
+  await fetchData();
+  isDisableLayer();
+};
+
+const comment = ref<string>('');
+const declineClick = ref(false);
+
+const declineVerification = async () => {
+  isEnableLayer();
+  const response = await putResource('/admin/verifikasi/' + id.value, {
+    type: 'ditolak',
+    comment: comment.value
+  });
+  id.value = '';
+  if (response) {
+    Notify.success('Berhasil memverifikasi pembayaran');
+  }
+  await fetchData();
+  isDisableLayer();
+};
+const id = ref<string>('');
+const handleDeclineClick = (i: string) => {
+  declineClick.value = true;
+  id.value = i;
 }
 
 </script>
@@ -112,16 +153,23 @@ const acceptVerification = async (i: any) => {
                 <td>{{ data.username }}</td>
                 <td class="text-end">{{ convertToRp(data.nominal) }}</td>
                 <td class="text-center">
-                  <button type="button" class="btn btn-info waves-effect btn-label waves-light" data-bs-target="#dinamyc-modal" data-bs-toggle="modal" @click="handleImage(data.pilgrims_id)">
+                  <button type="button" class="btn btn-info waves-effect btn-label waves-light"
+                    data-bs-target="#dinamyc-modal" data-bs-toggle="modal" @click="handleImage(data.pilgrims_id)">
                     <i class="bx bx-file label-icon"></i> File</button>
                 </td>
                 <td class="text-center">
-                  <button type="button" class="btn btn-danger waves-effect btn-label waves-light">
+                  <button type="button" class="btn btn-danger waves-effect btn-label waves-light"
+                    data-bs-target="#dinamyc-modal" data-bs-toggle="modal" @click="handleDeclineClick(data.pilgrims_id)">
                     <i class="bx bx-x label-icon"></i> Tolak</button>
                 </td>
                 <td class="text-center">
-                  <button type="button" class="btn btn-success waves-effect btn-label waves-light" @click="acceptVerification(data.pilgrims_id)"><i class="bx bx-check-double label-icon"></i> Terima</button>
+                  <button type="button" class="btn btn-success waves-effect btn-label waves-light"
+                    @click="acceptVerification(data.pilgrims_id)"><i class="bx bx-check-double label-icon"></i>
+                    Terima</button>
                 </td>
+              </tr>
+              <tr v-if="result.length == 0">
+                <td colspan="6" class="text-center">Data Tidak ada</td>
               </tr>
             </tbody>
           </table>
@@ -129,11 +177,25 @@ const acceptVerification = async (i: any) => {
       </div>
     </div>
     <Modal title="Bukti Transfer">
-      <div class="text-center">
-        <img :src="image" class="img-fluid" alt="Responsive image" />
+      <div class="row">
+        <div class="col-12" v-if="declineClick">
+          <div class="mb-3">
+            <label for="comment" class="form-label">Komentar:</label>
+            <textarea type="text" class="form-control" name="comment" id="comment" v-model="comment" rows="5" placeholder="Pembayaran ini ditolak sebab ..."></textarea>
+          </div>
+          <div class="mb-3">
+            <button class="btn btn-light" data-bs-dismiss="modal"><i class="bx bx-x"></i>Batal</button>
+            <button class="btn btn-info float-end" data-bs-dismiss="modal" @click="declineVerification"><i
+                class="bx bx-send"></i>Simpan</button>
+          </div>
+        </div>
+      </div>
+      <div class="text-center" id="img-center-modal" v-if="!declineClick">
+
       </div>
     </Modal>
     <Pagination :current-page="currentPage" :is-first-page="isFirstPage" :is-last-page="isLastPage" :go-to="goToPage"
-      :next-page="nextPage" :page-list="pageList" :total-page="totalPage" :prev-page="prevPage" :total-data="totalData" />
+      :next-page="nextPage" :page-list="pageList" :total-page="totalPage" :prev-page="prevPage" :total-data="totalData"
+      v-if="result.length > 0" />
   </Parent>
 </template>

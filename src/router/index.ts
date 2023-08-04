@@ -1,11 +1,26 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import { useSessionStore } from '../stores/session';
+import { ref } from 'vue';
+const isAdmin = ref<Boolean>(false);
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Dashboard',
     component: () => import('../views/admin/dashboard/index.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+    beforeEnter: async () => {
+      if(!isAdmin.value) {
+        return { path: '/jamaah' };
+      }
+    }
+  },
+  {
+    path: '/jamaah',
+    name: 'Dashboard Jamaah',
+    component: () => import('../views/pilgrim/dashboard/index.vue'),
   },
   {
     path: '/login',
@@ -102,6 +117,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('../views/error/404.vue'),
+  },
+
+  {
+    path: '/report/print',
+    name: 'Print Report',
+    component: () => import('../views/print/index.vue'),
   }
 ];
 
@@ -114,6 +135,11 @@ const router = createRouter({
 router.beforeEach(async (to) => {
   document.title = to.name as string;
   const { setUser, getUser } = useSessionStore();
+
+  if(to.name == 'Print Report') {
+    return true;
+  }
+
   if (to.name != 'Login' && (!sessionStorage.getItem('token') || sessionStorage.getItem('token')!.length <= 13)) {
     return { path: '/login' };
   }
@@ -124,9 +150,10 @@ router.beforeEach(async (to) => {
   if (sessionStorage.getItem('token')  && to.name != 'login' && to.name != 'NotFound') {
     if (getUser.id === 0) {
       await setUser();
+      isAdmin.value = getUser.role == 'Administrator' ? true : false;
+      console.log(isAdmin.value);
     }
   }
-
 });
 
 export default router;

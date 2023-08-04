@@ -2,7 +2,7 @@ import { ref } from "vue";
 import useApi from "./api";
 const { getResource } = useApi();
 
-export default function usePagination(path: string, q?:string ,query?: any) {
+export default function usePagination(path: string, q?:any ,query?: any) {
   const totalPage = ref<number>(0);
   const currentPage = ref<number>(1);
   const result = ref<any[]>([]);
@@ -63,8 +63,8 @@ export default function usePagination(path: string, q?:string ,query?: any) {
 
   async function fetchData() {
     let query = [];
-    if(q != ''){
-      query.push(`${path}${q}&page=${currentPage.value}&limit=${limitPage.value}`);
+    if(q.value){
+      query.push(`${path}${q.value}&page=${currentPage.value}&limit=${limitPage.value}`);
     } else {
       query.push(`${path}?page=${currentPage.value}&limit=${limitPage.value}`);
     }
@@ -77,10 +77,11 @@ export default function usePagination(path: string, q?:string ,query?: any) {
     startNumber.value = (currentPage.value - 1) * limitPage.value + 1;
   }
 
+
   async function search() {
     let search = [];
     if(q != ''){
-      search.push(`${path}${q}&page=${currentPage.value}&limit=${limitPage.value}&search=${query.value}`);
+      search.push(`${path}${q.value}&page=${currentPage.value}&limit=${limitPage.value}&search=${query.value}`);
     } else {
       search.push(`${path}?page=${currentPage.value}&limit=${limitPage.value}&search=${query.value}`);
     }

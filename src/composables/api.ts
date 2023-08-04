@@ -1,6 +1,7 @@
 import axios from "axios";
 import Notify from "../helpers/notify";
 import useToken from './token';
+import { isDisableLayer } from "../helpers/handleEvent";
 const { getAccessToken, validateToken } = useToken();
 export default function useApi() {
   const makeRequest = async (method: string, body = null, endpoint: string) => {
@@ -19,6 +20,7 @@ export default function useApi() {
       return data;
     } catch (error: any) {
       Notify.error(error.message);
+      isDisableLayer();
     }
   };
 

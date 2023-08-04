@@ -75,7 +75,7 @@ const loadData = async () => {
             <div class="row align-items-center">
               <div class="col-6">
                 <span class="text-muted mb-3 lh-1 d-block text-truncate">Pendapatan</span>
-                <h4 class="mb-3"><span class="counter-value">{{ convertToRp(data.total) }}</span></h4>
+                <h5 class="mb-3"><span class="counter-value">{{ convertToRp(data.total) }}</span></h5>
               </div>
               <div class="col-6 text-end">
                 <div class="avatar-md float-end">

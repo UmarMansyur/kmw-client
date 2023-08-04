@@ -10,7 +10,7 @@
                 <div class="d-flex align-items-start mt-3 mt-sm-0">
                   <div class="flex-shrink-0">
                     <div class="avatar-xl me-3">
-                      <img src="/images/users/avatar-11.jpeg" alt="" class="img-thumbnail rounded-circle d-block avatar-xl" />
+                      <img :src="getUser.thumbnail" alt="" class="img-thumbnail rounded-circle d-block avatar-xl" />
                     </div>
                   </div>
                   <div class="flex-grow-1">
@@ -20,14 +20,14 @@
                           <i class="bx bx-pencil"></i> Ubah Data Diri
                         </button>
                       </div>
-                      <h5 class="font-size-16 mb-1">getUser.thumbnail</h5>
-                      <p class="text-muted font-size-13">Administrator</p>
+                      <h5 class="font-size-16 mb-1">{{ getUser.name }}</h5>
+                      <p class="text-muted font-size-13">{{ getUser.role == 'jamaah' ? 'Jamaah' : '' }}</p>
                       <div class="d-flex flex-wrap align-items-start gap-2 gap-lg-3 text-muted font-size-13">
                         <div>
-                          <i class="mdi mdi-phone-refresh-outline me-1 text-success align-middle"></i>085231339223
+                          <i class="mdi mdi-phone-refresh-outline me-1 text-success align-middle"></i>{{ getUser.phone }}
                         </div>
                         <div>
-                          <i class="mdi mdi-email-outline me-1 text-success align-middle"></i> admin@gmail.com
+                          <i class="mdi mdi-email-outline me-1 text-success align-middle"></i> {{ getUser.email }}
                         </div>
                       </div>
                     </div>
@@ -57,9 +57,9 @@
         </div>
 
         <div class="tab-content">
-          <Datapersonal></Datapersonal>
-          <Editdatapersonal></Editdatapersonal>
-          <Account></Account>
+          <Datapersonal :get-user="getUser"></Datapersonal>
+          <Editdatapersonal :get-user="getUser" @update-user="updateUser"></Editdatapersonal>
+          <Account :get-user="getUser" @update-user="updateUser"></Account>
           <AccountBank></AccountBank>
         </div>
       </div>
@@ -74,7 +74,12 @@ import Account from './account.vue';
 import AccountBank from './bankaccount.vue';
 import Datapersonal from './datapersonal.vue';
 import Editdatapersonal from './editdatapersonal.vue';
+import { useSessionStore } from '../../../../stores/session';
+const { getUser, setUser } = useSessionStore();
 
+const updateUser = async () => {
+  await setUser();
+};
 
 </script>
 

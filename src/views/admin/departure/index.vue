@@ -4,7 +4,59 @@ import BreadCrumb from '../../../components/BreadCrumb.vue';
 import Pagination from '../../../components/Pagination.vue';
 import Modal from '../../../components/Modal.vue';
 import Form from './Form.vue';
+import usePagination from '../../../composables/pagination';
+import { ref, onMounted } from 'vue';
+import { isDisableLayer, isEnableLayer } from '../../../helpers/handleEvent';
+import useApi from '../../../composables/api';
+import Notify from '../../../helpers/notify';
+const { putResource } = useApi();
+const query = ref<string>('');
+const {
+  result,
+  totalData,
+  currentPage,
+  totalPage,
+  pageList,
+  isFirstPage,
+  isLastPage,
+  nextPage,
+  prevPage,
+  goToPage,
+  fetchData,
+} = usePagination("/admin/departure", '', query);
+
+onMounted(async () => {
+  isEnableLayer();
+  await fetchData();
+  isDisableLayer();
+});
+
+const id = ref<string>('');
+const getData = async (value: any) => {
+  console.log(value);
+  isEnableLayer();
+  const response = await putResource('/admin/departure/',{
+    id: id.value,
+    time: value
+  });
+  if(response) {
+    Notify.success('Berhasil mengatur waktu pemberangkatan');
+  }
+  await fetchData();
+  isDisableLayer();
+}
+
+const time = ref<string>('');
+
+const edit = (i: string) => {
+  id.value = i;
+  time.value = result.value.find((data: any) => data.id === i).waktu_keberangkatan.split(' ')[0];
+}
+
+
 </script>
+
+
 <template>
   <Parent>
     <BreadCrumb title="Pengaturan Jamaah" role="Administrator" />
@@ -59,15 +111,19 @@ import Form from './Form.vue';
               </tr>
             </thead>
             <tbody class="align-middle">
-              <tr>
-                <td>29 Juli 2022</td>
-                <td>29 Juli 2023</td>
-                <td>123123</td>
-                <td>Meita Regina Prayitno</td>
-                <td class="text-center">Blue</td>
-                <td>Rombasan Pragaan Sumenep</td>
+              <tr v-for="data in result" :key="data.id">
+                <td>{{ data.tanggal_mendaftar }}</td>
+                <td>{{ data.tanggal_lunas }}</td>
+                <td>{{ data.kode }}</td>
+                <td>{{ data.nama }}</td>
+                <td class="text-center">{{ data.kategori }}</td>
+                <td>{{ data.alamat }}</td>
                 <td class="text-center">
-                  <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#dinamyc-modal">
+
+                  <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#dinamyc-modal" @click="edit(data.id)" v-if="data.waktu_keberangkatan" >
+                    <i class="bx bx-pencil"></i>
+                  </button>
+                  <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#dinamyc-modal" @click="id = data.id" v-else>
                     <i class="bx bx-calendar"></i> Atur
                   </button>
                 </td>
@@ -75,11 +131,13 @@ import Form from './Form.vue';
             </tbody>
           </table>
           <Modal title="Atur Pemberangkatan">
-            <Form />
+            <Form @save="getData" :waktu="time"/>
           </Modal>
         </div>
       </div>
     </div>
-    <Pagination />
+    <Pagination :current-page="currentPage" :is-first-page="isFirstPage" :is-last-page="isLastPage" :go-to="goToPage"
+      :next-page="nextPage" :page-list="pageList" :total-page="totalPage" :prev-page="prevPage" :total-data="totalData"
+      v-if="result.length > 0" />
   </Parent>
 </template>

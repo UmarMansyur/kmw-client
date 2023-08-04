@@ -115,7 +115,7 @@ import useApi from '../composables/api';
 import Notify from '../helpers/notify';
 import { useSessionStore } from '../stores/session';
 const { deleteResource } = useApi();
-const { getUser } = useSessionStore();
+const { getUser, destroyUser } = useSessionStore();
 
 function clickedSidebar() {
   document.body.classList.toggle("pace-done");
@@ -139,6 +139,7 @@ async function logout() {
   if(response) {
     Notify.success('Berhasil logout');
     sessionStorage.clear();
+    destroyUser();
     router.replace('/login');
   }
 }

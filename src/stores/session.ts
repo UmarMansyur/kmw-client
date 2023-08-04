@@ -31,6 +31,14 @@ export const useSessionStore = defineStore({
       this.phone = response.phone;
       this.gender = response.gender;
       this.address = response.address;
+    },
+    destroyUser() {
+      this.id = 0;
+      this.name = '';
+      this.email = '';
+      this.role = '';
+      this.thumbnail = '';
+      this.phone = '';
     }
   }
 });

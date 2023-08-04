@@ -15,7 +15,7 @@
               </div>
               <div class="col-xl">
                 <div class="text-muted">
-                  <p class="mb-2">Meita Regina Priyanto</p>
+                  <p class="mb-2">{{ getUser.name }}</p>
                 </div>
               </div>
             </div>
@@ -25,12 +25,26 @@
             <div class="row">
               <div class="col-xl-2">
                 <div>
+                  <h5 class="font-size-15">Jabatan :</h5>
+                </div>
+              </div>
+              <div class="col-xl">
+                <div class="text-muted">
+                  <p class="mb-2" style="text-transform: capitalize;">{{ getUser.role }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="py-1">
+            <div class="row">
+              <div class="col-xl-2">
+                <div>
                   <h5 class="font-size-15">Nomor Telepon:</h5>
                 </div>
               </div>
               <div class="col-xl">
                 <div class="text-muted">
-                  <p class="mb-2">086789654223</p>
+                  <p class="mb-2">{{ getUser.phone }}</p>
                 </div>
               </div>
             </div>
@@ -44,7 +58,7 @@
               </div>
               <div class="col-xl">
                 <div class="text-muted">
-                  <p class="mb-2">regina@gmail.com</p>
+                  <p class="mb-2">{{ getUser.email }}</p>
                 </div>
               </div>
             </div>
@@ -58,7 +72,7 @@
               </div>
               <div class="col-xl">
                 <div class="text-muted">
-                  <p class="mb-2">Perempuan</p>
+                  <p class="mb-2">{{ getUser.gender }}</p>
                 </div>
               </div>
             </div>
@@ -72,14 +86,22 @@
               </div>
               <div class="col-xl">
                 <div class="text-muted">
-                  <p class="mb-2">Tlanakan, Pamekasan</p>
+                  <p class="mb-2">{{ getUser.address }}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- end card body -->
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+  defineProps({
+    getUser: {
+      type: Object,
+      required: true
+    }
+  });
+</script>
