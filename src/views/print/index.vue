@@ -23,6 +23,9 @@
           {{ convertToRp(data.nominal_saldo) }}
         </td>
       </tr>
+      <tr v-if="result.length == 0">
+        <td colspan="5" class="text-center">Data tidak ditemukan</td>
+      </tr>
     </tbody>
   </table>
 </template>
@@ -34,7 +37,7 @@ import { useRoute } from 'vue-router';
 import axios from 'axios';
 const result = ref<any[]>([]);
 const route = useRoute();
-onMounted(async ()=> {
+onMounted(async () => {
   isEnableLayer();
   await loadData();
   isDisableLayer();
@@ -42,9 +45,9 @@ onMounted(async ()=> {
 
 const loadData = async () => {
   const query = route.fullPath;
-  const {data: response} = await axios.get(import.meta.env.VITE_API_KMW + query);
+  const { data: response } = await axios.get(import.meta.env.VITE_API_KMW + query);
   result.value = response.data;
-  if(result.value) {
+  if (result.value) {
     setTimeout(() => {
       window.print();
       window.close();

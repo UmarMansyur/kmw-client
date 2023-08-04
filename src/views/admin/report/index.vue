@@ -136,6 +136,9 @@ const download = async () => {
                   {{ convertToRp(data.nominal_saldo) }}
                 </td>
               </tr>
+              <tr v-if="result.length == 0">
+                <td colspan="5" class="text-center">Tidak ada data</td>
+              </tr>
             </tbody>
           </table>
         </div>

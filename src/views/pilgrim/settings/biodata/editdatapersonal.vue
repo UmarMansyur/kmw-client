@@ -12,7 +12,7 @@
           </div>
           <div class="form-group mb-3">
             <label for="jabatan">Jabatan:</label>
-            <select class="form-select" id="jabatan" v-model="user.role" :readonly="user.role !== 'Administrator'">
+            <select class="form-select" id="jabatan" v-model="user.role" :disabled="user.role !== 'Administrator'">
               <option value="Administrator">Administrator</option>
               <option value="jamaah">Jamaah</option>
             </select>
@@ -101,10 +101,10 @@ const updateUser = async () => {
     await postResourceFile('users/' + user.value.id, 'POST', {
       username: user.value.name,
       email: user.value.email,
-      type: user.value.role === 'Administrator' ? 'admin' : user.value.role,
+      type: user.value.role,
     });
 
-    const response = await putResource('/user/admin/' + user.value.id, {
+    const response = await putResource('/pilgrims/' + user.value.id, {
       address: user.value.address,
       gender: user.value.gender,
       phone: user.value.phone,

@@ -6,10 +6,10 @@
         <div class="navbar-brand-box" id="navbar-brand-header">
           <a href="index.html" class="logo logo-light">
             <span class="logo-sm">
-              <img src="/images/logo.jpeg" alt="" height="24">
+              <img src="/images/kmw.png" alt="" height="24">
             </span>
             <span class="logo-lg">
-              <img src="/images/logo.jpeg" alt="" height="24"> <span class="logo-txt">KMW</span>
+              <img src="/images/kmw.png" alt="" height="24"> <span class="logo-txt">KMW</span>
             </span>
           </a>
         </div>

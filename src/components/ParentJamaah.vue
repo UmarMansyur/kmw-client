@@ -33,8 +33,9 @@ import UserSideBar from './UserSideBar.vue';
   </div>
 </template>
 
-<style>
-.navbar-brand-box {
-  /* box-shadow: 0 1px 1px linear-gradient(to right,#364574,#405189); */
+<style style>
+body[data-sidebar="dark"] .navbar-brand-box {
+  background: var(--bs-sidebar-dark-bg);
+  box-shadow: none;
 }
 </style>

@@ -131,6 +131,9 @@ const getSavingCategories = async (id: string) => {
                   </button>
                 </td>
               </tr>
+              <tr v-if="result.length == 0">
+                <td colspan="5" class="text-center">Data tidak ditemukan</td>
+              </tr>
             </tbody>
           </table>
         </div>

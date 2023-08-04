@@ -17,7 +17,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="timeline-box">
-                    <div class="timeline-date bg-danger text-center rounded">
+                    <div class="timeline-date bg-info text-center rounded">
                       <h3 class="text-white mb-0">{{ data.tgl_daftar ? getDate(data.tgl_daftar) : '?' }}</h3>
                       <p class="mb-0 text-white">{{ data.tgl_daftar ? getMonth(data.tgl_daftar) : '?' }}</p>
                     </div>
