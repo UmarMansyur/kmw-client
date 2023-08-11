@@ -1,11 +1,12 @@
 import axios from "axios";
 import Notify from "../helpers/notify";
 import useToken from './token';
-import { isDisableLayer } from "../helpers/handleEvent";
+import { isDisableLayer, isEnableLayer } from "../helpers/handleEvent";
 const { getAccessToken, validateToken } = useToken();
 export default function useApi() {
   const makeRequest = async (method: string, body = null, endpoint: string) => {
     try {
+      isEnableLayer();
       await validateToken();
       const response = await fetch(`${import.meta.env.VITE_API_KMW}${endpoint}`, {
         method,
@@ -17,6 +18,7 @@ export default function useApi() {
       });
       await checkResponse(response);
       const data = await response.json();
+      isDisableLayer();
       return data;
     } catch (error: any) {
       Notify.error(error.message);

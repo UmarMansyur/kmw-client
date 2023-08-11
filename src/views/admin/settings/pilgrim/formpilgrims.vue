@@ -93,7 +93,7 @@ const schema = yup.object().shape({
   kk: yup.string().required().min(3).max(25),
   birth_day: yup.string().required().min(3),
   gender: yup.string().required().min(3),
-  phone: yup.string().required().min(3).max(13),
+  phone: yup.string().required().min(3).max(20),
   email: yup.string().required().min(3).max(1000),
   password: yup.string().required().min(8),
   address: yup.string().required().min(3)
