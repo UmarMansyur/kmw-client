@@ -31,11 +31,12 @@ export default function useValidateLogin() {
         email: username.value,
         password: password.value,
       });
-      Notify.success('Berhasil Login');
       await setToken(response.data.data.token);
       router.replace('/');
     } catch (error: any) {
       Notify.error(error.message);
+      username.value = '';
+      password.value = '';
       document.querySelector('.btn-success')!.innerHTML = '<i class="bx bx-lock-open font-size-16 align-middle me-2"></i> Login';
       router.replace({ name: 'Login' });
     }

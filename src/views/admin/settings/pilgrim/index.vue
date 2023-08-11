@@ -12,7 +12,6 @@ import { isDisableLayer, isEnableLayer } from '../../../../helpers/handleEvent';
 const { deleteResource } = useApi();
 const query = ref<string>('');
 
-
 const {
   result,
   totalData,
@@ -24,6 +23,7 @@ const {
   nextPage,
   prevPage,
   goToPage,
+  search,
   fetchData,
 } = usePagination("/pilgrims", '', query);
 
@@ -32,6 +32,12 @@ onMounted(async () => {
   await fetchData();
   isDisableLayer();
 });
+
+async function getSearch() {
+  isEnableLayer();
+  await search();
+  isDisableLayer();
+}
 
 const deleteData = async (id: string) => {
   Sweet.confirm('Apakah anda yakin ingin menghapus data ini?', async () => {
@@ -47,7 +53,7 @@ const deleteData = async (id: string) => {
   <Parent>
     <BreadCrumb title="Pengaturan Jamaah" role="Administrator" />
     <div class="row">
-      <div class="col-md-5 col-12 d-none d-lg-block">
+      <div class="col-md-5 col-12">
         <div class="form-group row">
           <label for="search" class="col-md-2 col-4 col-form-label">Tampilkan:
           </label>
@@ -64,15 +70,15 @@ const deleteData = async (id: string) => {
         </div>
       </div>
       <div class="col-md-3" />
-      <div class="col-md-4 col-12 d-none d-lg-block">
+      <div class="col-md-4 col-12">
         <div class="form-group row">
           <label for="search" class="col-sm-2 col-2 col-form-label">Cari:
           </label>
           <div class="col-sm-10 col-10">
             <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="Masukkan kata kunci" />
+              <input type="text" class="form-control" placeholder="Masukkan kata kunci" v-model="query" @change="getSearch()"/>
               <div class="input-group-append">
-                <button class="btn btn-info" type="button">
+                <button class="btn btn-info" type="button" @click="getSearch()">
                   <i class="bx bx-search-alt" />
                 </button>
                 <RouterLink to="/pengaturan/jamaah/tambah" class="btn btn-primary ms-2" type="button">
@@ -124,7 +130,10 @@ const deleteData = async (id: string) => {
                 </td>
               </tr>
               <tr v-if="result.length === 0">
-                <td colspan="7" class="text-center">Data tidak ditemukan</td>
+                <td colspan="7" class="text-center bg-light">
+                  <img src="/images/error404.png" class="img-fluid">
+                  <h5 class="text-danger">Data tidak ditemukan</h5>
+                </td>
               </tr>
             </tbody>
           </table>

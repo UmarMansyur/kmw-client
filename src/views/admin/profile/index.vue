@@ -10,13 +10,13 @@
                 <div class="d-flex align-items-start mt-3 mt-sm-0">
                   <div class="flex-shrink-0">
                     <div class="avatar-xl me-3">
-                      <img :src="getUser.thumbnail" alt="" class="img-thumbnail rounded-circle d-block" />
+                      <img :src="getUser.thumbnail" alt="" class="img-thumbnail avatar-xl rounded-circle d-block" />
                     </div>
                   </div>
                   <div class="flex-grow-1">
                     <div>
                       <div class="float-end">
-                        <button class="btn btn-warning">
+                        <button class="btn btn-warning" @click="clickedEdit">
                           <i class="bx bx-pencil"></i> Ubah Data Diri
                         </button>
                       </div>
@@ -42,7 +42,7 @@
                   Diri</a>
               </li>
               <li class="nav-item" role="presentation">
-                <a class="nav-link px-3" data-bs-toggle="tab" href="#edit-biodata" role="tab" aria-selected="false"
+                <a class="nav-link px-3" data-bs-toggle="tab" id="nav-link-edit" href="#edit-biodata" role="tab" aria-selected="false"
                   tabindex="-1">Ubah Data Diri</a>
               </li>
               <li class="nav-item" role="presentation">
@@ -74,6 +74,10 @@ const { getUser, setUser } = useSessionStore();
 const updateUser = async () => {
   await setUser();
 };
+
+function clickedEdit() {
+  document.getElementById('nav-link-edit')?.click();
+}
 
 
 </script>

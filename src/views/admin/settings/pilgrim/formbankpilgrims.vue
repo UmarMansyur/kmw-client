@@ -11,6 +11,7 @@
             <label for="haji" class="form-label font-size-13 text-muted">Kategori Tabungan: </label>
             <select class="form-control" data-trigger name="haji" id="haji" placeholder="Pilih Jenis Kategori Tabungan"
               v-model="saving_category_id">
+              <option value="" disabled>Pilih Kategori Tabungan</option>
               <option v-for="category in categories" :key="category.saving_category_id"
                 :value="category.saving_category_id">
                 {{ category.name }} - {{ convertToRp(category.limit) }}
@@ -23,6 +24,7 @@
             <label for="bank-name" class="form-label font-size-13 text-muted">Nama Bank: </label>
             <select class="form-control" data-trigger name="bank-name" id="bank-name"
               placeholder="Pilih Jenis Kategori Tabungan" v-model="bank_name">
+              <option value="" disabled>Pilih Bank</option>
               <option value="bni">Bank Negara Indonesia</option>
               <option value="bri">Bank Rakyat Indonesia</option>
               <option value="bca">Bank Central Asia</option>

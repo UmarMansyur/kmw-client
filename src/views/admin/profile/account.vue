@@ -17,7 +17,7 @@
         <div class="row">
           <div class="col-12">
             <label for="password" class="form-label">Password: </label>
-            <input type="password" name="password" id="password" class="form-control" placeholder="password" v-model="password" />
+            <input type="password" name="password" id="password" class="form-control" placeholder="Password" v-model="password" />
           </div>
           <div class="col-12 my-3">
             <label for="confirmation-password" class="form-label">Konfirmasi Password: </label>

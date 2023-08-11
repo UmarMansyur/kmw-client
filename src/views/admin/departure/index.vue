@@ -33,7 +33,6 @@ onMounted(async () => {
 
 const id = ref<string>('');
 const getData = async (value: any) => {
-  console.log(value);
   isEnableLayer();
   const response = await putResource('/admin/departure/',{
     id: id.value,

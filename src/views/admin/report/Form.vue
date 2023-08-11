@@ -96,6 +96,5 @@ const categories = ref<any[]>([]);
 const loadCategories = async () => {
   const response = await getResource('/saving-categories?limit=10000');
   categories.value = response.data.data;
-  console.log(response.data.data);
 };
 </script>
