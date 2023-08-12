@@ -68,7 +68,7 @@
               v-model="password" :class="{ 'is-invalid': metaPassword.dirty && !metaPassword.valid }">
             <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted"
               @click="handleTogglePassword()" type="button">
-              <i class="mdi mdi-eye-outline align-middle"></i>
+              <i class="mdi mdi-eye-outline" id="password-icon"></i>
             </button>
           </div>
         </div>

@@ -44,7 +44,7 @@
                 <div class="row mb-4">
                   <label for="file" class="col-sm-3 col-form-label">Bukti Transfer: </label>
                   <div class="col-sm-9">
-                    <input type="file" class="form-control" id="file" placeholder="Contoh: Rp. 1xxx" @change="getFile">
+                    <input type="file" class="form-control" id="file" placeholder="Contoh: Rp. 1xxx" @change="getFile" accept="image/*, .pdf">
                   </div>
                 </div>
                 <div class="row justify-content-end">
@@ -70,7 +70,6 @@
 <script setup lang="ts">
 import BreadCrumb from '../../../components/BreadCrumb.vue';
 import UserParent from '../../../components/ParentJamaah.vue';
-
 import { ref, onMounted } from 'vue';
 import { convertToRp, isDisableLayer, isEnableLayer } from '../../../helpers/handleEvent';
 import useApi from '../../../composables/api';
@@ -78,9 +77,11 @@ import { useSessionStore } from '../../../stores/session';
 import * as yup from 'yup';
 import { useField, useForm } from 'vee-validate';
 import Notify from '../../../helpers/notify';
+import useNotification from '../../../composables/notification';
 
 const { getResource, postResourceFile, postResource } = useApi();
 const { getUser } = useSessionStore();
+const { loadNotification, pushNotification: post, depositNotification } = useNotification();
 onMounted(async () => {
   isEnableLayer();
   await loadData();
@@ -129,12 +130,19 @@ const tryDeposit = async () => {
     file: file_id,
   });
   if (response) {
-    Notify.success('Berhasil setor');
+    await pushNotification(response.data.transactional_savings_id);
   }
   nominal.value = '';
   file.value = '';
+  Notify.success('Berhasil setor');
   await loadData();
+  await loadNotification();
   isDisableLayer();
+};
+
+const pushNotification = async (id: string) => {
+  await depositNotification(id);
+  await post();
 }
 
 </script>

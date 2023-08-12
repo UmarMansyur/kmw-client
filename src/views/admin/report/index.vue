@@ -17,6 +17,7 @@ const {
   currentPage,
   totalPage,
   pageList,
+  search,
   isFirstPage,
   isLastPage,
   nextPage,
@@ -50,12 +51,18 @@ const download = async () => {
   }
 }
 
+async function getSearch () {
+  isEnableLayer();
+  await search();
+  isDisableLayer();
+}
+
 </script>
 <template>
   <Parent>
     <BreadCrumb title="Laporan" role="Administrator" />
     <div class="row">
-      <div class="col-md-5 col-12 d-none d-lg-block">
+      <div class="col-md-5 col-12 ">
         <div class="form-group row">
           <label for="search" class="col-md-2 col-4 col-form-label">Tampilkan:
           </label>
@@ -74,13 +81,12 @@ const download = async () => {
       <div class="col-md-1"></div>
       <div class="col-md-6 col-12">
         <div class="form-group row">
-          <label for="search" class="col-sm-2 col-2 col-form-label">Cari:
-          </label>
-          <div class="col-sm-10 col-10">
+          <label for="search" class="col-sm-2 col-2 col-form-label d-none d-md-block">Cari:</label>
+          <div class="col-sm-10 col-12">
             <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="Masukkan kata kunci" />
+              <input type="text" class="form-control" placeholder="Cari ..." @change="getSearch" v-model="query"/>
               <div class="input-group-append">
-                <button class="btn btn-info" type="button">
+                <button class="btn btn-info" type="button" @click="getSearch">
                   <i class="bx bx-search-alt" />
                 </button>
                 <button class="btn btn-light ms-2" type="button" data-bs-target="#dinamyc-modal" data-bs-toggle="modal">
@@ -90,7 +96,7 @@ const download = async () => {
                   <Form @filter="getFilter" />
                 </Modal>
                 <a class="btn btn-warning ms-2" type="button" :href="'report/print/' + queryFilter" target="_blank">
-                  <i class="bx bx-printer"></i> Cetak
+                  <i class="bx bx-printer "></i> <span class="d-none d-lg-inline-block">Cetak</span>
                 </a>
                 <button class="btn btn-success ms-2" type="button" @click="download">
                   <i class="bx bx-download"></i>
@@ -103,7 +109,7 @@ const download = async () => {
       </div>
     </div>
     <div class="row">
-    <div class="col-12 d-none d-lg-block">
+    <div class="col-12 ">
       <div class="alert alert-top-border alert-info">
           <p class="mb-0">
             <i class="mdi mdi-alert-circle-outline me-1"></i> <span>Jika saldo jamaah sudah melebihi batas jenis kategori tabungan, maka terdapat warna latar belakang pada baris data.</span>
@@ -137,7 +143,9 @@ const download = async () => {
                 </td>
               </tr>
               <tr v-if="result.length == 0">
-                <td colspan="5" class="text-center">Tidak ada data</td>
+                <td colspan="5" class="text-center bg-light">
+                  <img src="/images/error404.png" class="img-fluid">
+                </td>
               </tr>
             </tbody>
           </table>

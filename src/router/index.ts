@@ -91,6 +91,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/jamaah/',
     name: 'Dashboard Jamaah',
     component: () => import('../views/pilgrim/dashboard/index.vue'),
+    beforeEnter: async () => {
+      if(isAdmin.value) {
+        return { path: '/' };
+      }
+    }
   },
   {
     path: '/jamaah/setoran',

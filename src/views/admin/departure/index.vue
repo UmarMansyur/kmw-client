@@ -17,6 +17,7 @@ const {
   currentPage,
   totalPage,
   pageList,
+  search,
   isFirstPage,
   isLastPage,
   nextPage,
@@ -34,22 +35,28 @@ onMounted(async () => {
 const id = ref<string>('');
 const getData = async (value: any) => {
   isEnableLayer();
-  const response = await putResource('/admin/departure/',{
+  const response = await putResource('/admin/departure/', {
     id: id.value,
     time: value
   });
-  if(response) {
+  if (response) {
     Notify.success('Berhasil mengatur waktu pemberangkatan');
   }
   await fetchData();
   isDisableLayer();
-}
+};
 
 const time = ref<string>('');
 
 const edit = (i: string) => {
   id.value = i;
   time.value = result.value.find((data: any) => data.id === i).waktu_keberangkatan.split(' ')[0];
+}
+
+async function getSearch () {
+  isEnableLayer();
+  await search();
+  isDisableLayer();
 }
 
 
@@ -60,7 +67,7 @@ const edit = (i: string) => {
   <Parent>
     <BreadCrumb title="Pengaturan Jamaah" role="Administrator" />
     <div class="row">
-      <div class="col-md-5 col-12 d-none d-lg-block">
+      <div class="col-md-5 col-12 ">
         <div class="form-group row">
           <label for="search" class="col-md-2 col-4 col-form-label">Tampilkan:
           </label>
@@ -77,15 +84,15 @@ const edit = (i: string) => {
         </div>
       </div>
       <div class="col-md-3" />
-      <div class="col-md-4 col-12 d-none d-lg-block">
+      <div class="col-md-4 col-12 ">
         <div class="form-group row">
           <label for="search" class="col-sm-2 col-2 col-form-label">Cari:
           </label>
           <div class="col-sm-10 col-10">
             <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="Masukkan kata kunci" />
+              <input type="text" class="form-control" placeholder="Masukkan kata kunci" v-model="query" @change="getSearch" />
               <div class="input-group-append">
-                <button class="btn btn-info" type="button">
+                <button class="btn btn-info" type="button" @click="getSearch">
                   <i class="bx bx-search-alt" />
                 </button>
               </div>
@@ -119,18 +126,25 @@ const edit = (i: string) => {
                 <td>{{ data.alamat }}</td>
                 <td class="text-center">
 
-                  <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#dinamyc-modal" @click="edit(data.id)" v-if="data.waktu_keberangkatan" >
+                  <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#dinamyc-modal"
+                    @click="edit(data.id)" v-if="data.waktu_keberangkatan">
                     <i class="bx bx-pencil"></i>
                   </button>
-                  <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#dinamyc-modal" @click="id = data.id" v-else>
+                  <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#dinamyc-modal"
+                    @click="id = data.id" v-else>
                     <i class="bx bx-calendar"></i> Atur
                   </button>
+                </td>
+              </tr>
+              <tr v-if="result.length == 0">
+                <td colspan="7" class="text-center bg-light">
+                  <img src="/images/error404.png" class="img-fluid">
                 </td>
               </tr>
             </tbody>
           </table>
           <Modal title="Atur Pemberangkatan">
-            <Form @save="getData" :waktu="time"/>
+            <Form @save="getData" :waktu="time" />
           </Modal>
         </div>
       </div>

@@ -56,7 +56,7 @@ const download = async () => {
   <ParentJamaah>
     <BreadCrumb title="Laporan" role="Jamaah" />
     <div class="row">
-      <div class="col-md-5 col-12 d-none d-lg-block">
+      <div class="col-md-5 col-12 ">
         <div class="form-group row">
           <label for="search" class="col-md-2 col-4 col-form-label">Tampilkan:
           </label>

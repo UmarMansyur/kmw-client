@@ -82,9 +82,11 @@ const createUser = async () => {
 };
 
 const createPilgrim = async (i: string) => {
+  console.log(data.value.bank_name);
   let response: any;
   if (id.value) {
-    response = await putResource('/pilgrims/' + oldData.value.pilgrims_id, {
+    console.log(id.value);
+    response = await putResource('/pilgrims/' + id.value, {
       user_account_id: i,
       saving_category_id: data.value.saving_category_id,
       bank_name: data.value.bank_name,

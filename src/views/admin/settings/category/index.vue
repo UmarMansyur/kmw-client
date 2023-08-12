@@ -23,6 +23,7 @@ const {
   currentPage,
   totalPage,
   pageList,
+  search,
   changeLimit,
   isFirstPage,
   isLastPage,
@@ -40,29 +41,35 @@ onMounted(async () => {
 
 const getLimit = (value: number) => {
   changeLimit(value);
-}
+};
 
 const loadData = async () => {
   await fetchData();
-}
+};
 
 const destroy = (id: string) => {
   Sweet.confirm('Apakah anda yakin ingin menghapus data ini?', async () => {
     const response = await deleteResource(`/saving-categories/${id}`);
-    if(response) {
+    if (response) {
       Notify.success('Berhasil menghapus data');
       await fetchData();
     }
-  })
-}
+  });
+};
 
 
 const saving_category = ref<any>({});
 const getSavingCategories = async (id: string) => {
   const response = await getResource('/saving-categories/' + id);
-  if(response) {
+  if (response) {
     saving_category.value = response.data;
   }
+};
+
+const getSearch = async () => {
+  isEnableLayer();
+  await search();
+  isDisableLayer();
 }
 
 </script>
@@ -70,21 +77,22 @@ const getSavingCategories = async (id: string) => {
   <Parent>
     <BreadCrumb title="Pengaturan Kategori" role="Administrator" />
     <div class="row">
-      <div class="col-md-5 col-12 d-none d-lg-block">
+      <div class="col-md-5 col-12 ">
         <div class="form-group row">
           <DisplayLimit @limit="getLimit"></DisplayLimit>
         </div>
       </div>
       <div class="col-md-3" />
-      <div class="col-md-4 col-12 d-none d-lg-block">
+      <div class="col-md-4 col-12 ">
         <div class="form-group row">
           <label for="search" class="col-sm-2 col-2 col-form-label">Cari:
           </label>
           <div class="col-sm-10 col-10">
             <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="Masukkan kata kunci" />
+              <input type="text" class="form-control" placeholder="Masukkan kata kunci" v-model="query"
+                @change="getSearch()" />
               <div class="input-group-append">
-                <button class="btn btn-info" type="button">
+                <button class="btn btn-info" type="button" @click="getSearch()">
                   <i class="bx bx-search-alt"></i>
                 </button>
                 <button class="btn btn-primary ms-2" type="button" data-bs-toggle="modal" data-bs-target="#dinamyc-modal">
@@ -121,7 +129,8 @@ const getSavingCategories = async (id: string) => {
                 <td>{{ data.name }}</td>
                 <td>{{ convertToRp(data.limit) }}</td>
                 <td class="text-center">
-                  <button class="btn btn-sm btn-info" @click="getSavingCategories(data.saving_category_id)" data-bs-target="#dinamyc-modal" data-bs-toggle="modal">
+                  <button class="btn btn-sm btn-info" @click="getSavingCategories(data.saving_category_id)"
+                    data-bs-target="#dinamyc-modal" data-bs-toggle="modal">
                     <i class="bx bx-pencil"></i> Edit
                   </button>
                 </td>
@@ -132,7 +141,10 @@ const getSavingCategories = async (id: string) => {
                 </td>
               </tr>
               <tr v-if="result.length == 0">
-                <td colspan="5" class="text-center">Data tidak ditemukan</td>
+                <td colspan="5" class="text-center bg-light">
+                  <img src="/images/error404.png" class="img-fluid">
+                  <h5 class="text-danger mt-0">Data tidak ditemukan</h5>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -141,5 +153,4 @@ const getSavingCategories = async (id: string) => {
     </div>
     <Pagination :current-page="currentPage" :is-first-page="isFirstPage" :is-last-page="isLastPage" :go-to="goToPage"
       :next-page="nextPage" :page-list="pageList" :total-page="totalPage" :prev-page="prevPage" :total-data="totalData" />
-  </Parent>
-</template>
+</Parent></template>

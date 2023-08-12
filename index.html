@@ -10,7 +10,7 @@
   <!-- Icons Css -->
   <link href="/css/icons.min.css" rel="stylesheet" type="text/css" />
   <!-- App Css-->
-  <link href="/css/app.min.css"  rel="stylesheet" type="text/css" />
+  <link href="/css/app.min.css" rel="stylesheet" type="text/css" />
   <link href="/css/preloader.min.css" rel="stylesheet" type="text/css" />
   <!-- SweetAlert2 -->
   <link rel="stylesheet" href="/libs/sweetalert2/sweetalert2.min.css" type="text/css">
@@ -20,11 +20,25 @@
   <!-- form wizard -->
   <link href="/libs/twitter-bootstrap-wizard/prettify.css" rel="stylesheet">
   <title>Vite + Vue + TS</title>
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(function(OneSignal) {
+      OneSignal.init({
+        appId: "3a5cb42f-fbe4-4b3a-91d8-3b8f93a7e442",
+      });
+    });
+  </script>
 </head>
 
 <body data-sidebar="dark">
   <div class="layer d-none">
-    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+    <div class="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
   </div>
   <div id="app"></div>
   <script type="module" src="/src/main.ts"></script>

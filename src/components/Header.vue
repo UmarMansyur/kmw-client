@@ -97,7 +97,8 @@
             <RouterLink class="dropdown-item" to="/pengaturan/profile"><i
                 class="mdi mdi mdi-face-man font-size-16 align-middle me-1"></i> Profile</RouterLink>
             <div class="dropdown-divider"></div>
-            <button @click="logout" class="dropdown-item" href="auth-logout.html"><i class="mdi mdi-logout font-size-16 align-middle me-1"></i>
+            <button @click="logout" class="dropdown-item" href="auth-logout.html"><i
+                class="mdi mdi-logout font-size-16 align-middle me-1"></i>
               Logout</button>
           </div>
         </div>
@@ -136,7 +137,7 @@ function clickedSidebar() {
 
 async function logout() {
   const response = await deleteResource('/auth/logout');
-  if(response) {
+  if (response) {
     Notify.success('Berhasil logout');
     sessionStorage.clear();
     destroyUser();
@@ -146,5 +147,10 @@ async function logout() {
 
 onMounted(() => {
   document.body.setAttribute('data-sidebar-size', 'lg');
+  if (window.innerWidth <= 992) {
+    clickedSidebar();
+  }
+
 });
+
 </script>

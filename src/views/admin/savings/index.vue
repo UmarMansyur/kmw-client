@@ -14,6 +14,7 @@ const {
   currentPage,
   totalPage,
   pageList,
+  search,
   isFirstPage,
   isLastPage,
   nextPage,
@@ -28,13 +29,19 @@ onMounted(async () => {
   isDisableLayer();
 });
 
+const handleSearch = async () => {
+  isEnableLayer();
+  await search();
+  isDisableLayer();
+};
+
 
 </script>
 <template>
   <Parent>
     <BreadCrumb title="Tabungan" role="Administrator" />
     <div class="row">
-      <div class="col-md-5 col-12 d-none d-lg-block">
+      <div class="col-md-5 col-12 ">
         <div class="form-group row">
           <label for="search" class="col-md-2 col-4 col-form-label">Tampilkan:
           </label>
@@ -51,15 +58,16 @@ onMounted(async () => {
         </div>
       </div>
       <div class="col-md-3" />
-      <div class="col-md-4 col-12 d-none d-lg-block">
+      <div class="col-md-4 col-12 ">
         <div class="form-group row">
           <label for="search" class="col-sm-2 col-2 col-form-label">Cari:
           </label>
           <div class="col-sm-10 col-10">
             <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="Masukkan kata kunci" />
+              <input type="text" class="form-control" placeholder="Masukkan kata kunci" @change="handleSearch"
+                v-model="query" />
               <div class="input-group-append">
-                <button class="btn btn-info" type="button">
+                <button class="btn btn-info" type="button" @click="handleSearch">
                   <i class="bx bx-search-alt" />
                 </button>
               </div>
@@ -93,26 +101,31 @@ onMounted(async () => {
                 <td>{{ data.name }}</td>
                 <td class="text-end">{{ convertToRp(data.nominal) }}</td>
                 <td class="text-center">
-                  <RouterLink :to="`/tabungan/detail/${encrypt(data.pilgrims_id.toString())}`" type="button" class="btn btn-info btn-sm waves-effect btn-label waves-light">
+                  <RouterLink :to="`/tabungan/detail/${encrypt(data.pilgrims_id.toString())}`" type="button"
+                    class="btn btn-info btn-sm waves-effect btn-label waves-light">
                     <i class="bx bx-search label-icon"></i>
-                    Lihat</RouterLink>
+                    Lihat
+                  </RouterLink>
                 </td>
                 <td class="text-center">
-                  
-                  <RouterLink :to="`/tabungan/setor/${encrypt(data.pilgrims_id.toString())}`" type="button" class="btn btn-success btn-sm waves-effect btn-label waves-light">
+
+                  <RouterLink :to="`/tabungan/setor/${encrypt(data.pilgrims_id.toString())}`" type="button"
+                    class="btn btn-success btn-sm waves-effect btn-label waves-light">
                     <i class="bx bx-navigation label-icon"></i>
-                    Setor</RouterLink>
+                    Setor
+                  </RouterLink>
                 </td>
               </tr>
               <tr v-if="result.length == 0">
-                <td colspan="6" class="text-center">Data tidak ditemukan</td>
+                <td colspan="6" class="text-center bg-light"> <img src="/images/error404.png" class="img-fluid">
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-    </div>
-    <Pagination :current-page="currentPage" :is-first-page="isFirstPage" :is-last-page="isLastPage" :go-to="goToPage"
-      :next-page="nextPage" :page-list="pageList" :total-page="totalPage" :prev-page="prevPage" :total-data="totalData" v-if="result.length > 0" />
-  </Parent>
-</template>
+  </div>
+  <Pagination :current-page="currentPage" :is-first-page="isFirstPage" :is-last-page="isLastPage" :go-to="goToPage"
+    :next-page="nextPage" :page-list="pageList" :total-page="totalPage" :prev-page="prevPage" :total-data="totalData"
+    v-if="result.length > 0" />
+</Parent></template>

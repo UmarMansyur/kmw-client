@@ -1,10 +1,18 @@
+import { ref } from "vue";
+
+const password = ref<boolean>(true);
 function handleTogglePassword() {
   const passwordInput: any = document.querySelector('#password-input');
   const passwordInputType = passwordInput.getAttribute('type');
+  const icon = document.querySelector('#password-icon');
   if (passwordInputType === 'password') {
     passwordInput.setAttribute('type', 'text');
+    icon?.classList.remove('mdi-eye-outline');
+    icon?.classList.add('mdi-eye-off-outline');
   } else {
     passwordInput.setAttribute('type', 'password');
+    icon?.classList.remove('mdi-eye-off-outline');
+    icon?.classList.add('mdi-eye-outline');
   }
 }
 
@@ -24,5 +32,5 @@ function isDisableLayer() {
 
 
 export {
-  handleTogglePassword, convertToRp, isEnableLayer, isDisableLayer
+  handleTogglePassword, convertToRp, isEnableLayer, isDisableLayer, password
 }

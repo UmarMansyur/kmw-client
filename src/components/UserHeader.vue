@@ -3,7 +3,8 @@
     <div class="navbar-header">
       <div class="d-flex">
         <!-- LOGO -->
-        <div class="navbar-brand-box" id="navbar-brand-header" style="background: linear-gradient(to right,#364574,#405189)">
+        <div class="navbar-brand-box" id="navbar-brand-header"
+          style="background: linear-gradient(to right,#364574,#405189)">
           <a href="index.html" class="logo logo-light">
             <span class="logo-sm">
               <img src="/images/kmw.png" alt="" height="24">
@@ -25,7 +26,7 @@
           <button type="button" class="btn header-item noti-icon position-relative"
             id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i data-feather="bell"></i>
-            <span class="badge bg-danger rounded-pill">1</span>
+            <span class="badge bg-danger rounded-pill" v-if="unreadNotification > 0">{{ unreadNotification }}</span>
           </button>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
             aria-labelledby="page-header-notifications-dropdown">
@@ -35,7 +36,8 @@
                   <h6 class="m-0"> Notifikasi </h6>
                 </div>
                 <div class="col-auto">
-                  <a href="#!" class="small text-reset text-decoration-underline"> Tidak dibaca (1)</a>
+                  <a href="#!" class="small text-reset text-decoration-underline"> Tidak dibaca ({{ unreadNotification
+                  }})</a>
                 </div>
               </div>
             </div>
@@ -47,21 +49,26 @@
                 <div class="simplebar-mask">
                   <div class="simplebar-offset">
                     <div class="simplebar-content-wrapper">
-                      <div class="simplebar-content">
-                        <RouterLink to="/jamaah/setoran" class="text-reset notification-item bg-secondary">
-                          <div class="d-flex">
+                      <div class="simplebar-content" data-simplebar style="max-height: 230px;">
+                        <div class="text-reset notification-item" >
+                          <div class="d-flex" v-for="data in notifications" :key="data.notification_id"
+                            :class="data.status == 'unread' ? 'bg-body-tertiary' : ''" style="cursor: pointer" @click="readNotification(data.notification_id)">
                             <div class="flex-shrink-0 me-3">
-                              <img src="/images/users/avatar-11.jpeg" class="rounded-circle avatar-sm" alt="user-pic">
+                              <img :src="getUser.thumbnail" class="rounded-circle avatar-sm" alt="user-pic">
                             </div>
                             <div class="flex-grow-1">
                               <h6 class="mb-1">{{ getUser.name }}</h6>
                               <div class="font-size-13 text-muted">
-                                <p class="mb-1">Pembayaran belum diverifikasi</p>
-                                <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span>1 jam yang lalu</span></p>
+                                <p class="mb-1">{{ data.message }}</p>
+                                <p class="mb-0"><i class="mdi mdi-clock-outline"></i>
+                                  <span>
+                                    {{ data.created_at }}
+                                  </span>
+                                </p>
                               </div>
                             </div>
                           </div>
-                        </RouterLink>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -85,6 +92,8 @@
           </div>
         </div>
 
+
+
         <div class="dropdown d-inline-block">
           <button type="button" class="btn header-item bg-light-subtle border-start border-end"
             id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -97,7 +106,8 @@
             <RouterLink class="dropdown-item" to="/jamaah/pengaturan-profile"><i
                 class="mdi mdi mdi-face-man font-size-16 align-middle me-1"></i> Profile</RouterLink>
             <div class="dropdown-divider"></div>
-            <button @click="logout" class="dropdown-item" href="auth-logout.html"><i class="mdi mdi-logout font-size-16 align-middle me-1"></i>
+            <button @click="logout" class="dropdown-item" href="auth-logout.html"><i
+                class="mdi mdi-logout font-size-16 align-middle me-1"></i>
               Logout</button>
           </div>
         </div>
@@ -114,8 +124,11 @@ import { useSessionStore } from '../stores/session';
 import useApi from '../composables/api';
 import Notify from '../helpers/notify';
 import router from '../router';
-const { deleteResource } = useApi();
+import useNotification from '../composables/notification';
+import { isDisableLayer } from '../helpers/handleEvent';
+const { deleteResource, getResource } = useApi();
 const { getUser, destroyUser } = useSessionStore();
+const { loadNotification, notifications, unreadNotification } = useNotification();
 
 function clickedSidebar() {
   document.body.classList.toggle("pace-done");
@@ -136,7 +149,7 @@ function clickedSidebar() {
 
 async function logout() {
   const response = await deleteResource('/auth/logout');
-  if(response) {
+  if (response) {
     Notify.success('Berhasil logout');
     sessionStorage.clear();
     destroyUser();
@@ -144,8 +157,22 @@ async function logout() {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   document.body.setAttribute('data-sidebar-size', 'lg');
-
+  await loadNotification();
+  if (window.innerWidth <= 992) {
+    clickedSidebar();
+  }
 });
+
+
+const readNotification = async (id: string) => {
+  const response = await getResource('/notification/'+id);
+  if(response) {
+    await loadNotification();
+    router.replace('/jamaah/laporan');
+  }
+  isDisableLayer();
+};
+
 </script>

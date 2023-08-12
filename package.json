@@ -9,9 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@onesignal/onesignal-vue3": "^1.0.2",
     "axios": "^1.4.0",
     "crypto-js": "^4.1.1",
+    "onesignal-vue": "^1.0.2",
     "pinia": "^2.1.6",
+    "pusher-js": "^8.3.0",
     "vee-validate": "^4.10.8",
     "vue": "^3.3.4",
     "vue-cryptojs": "^2.4.3",
