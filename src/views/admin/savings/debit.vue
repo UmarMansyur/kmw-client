@@ -10,7 +10,7 @@ import * as yup from 'yup';
 import { useField, useForm } from 'vee-validate';
 import Notify from '../../../helpers/notify';
 import router from '../../../router';
-const { getResource, postResource } = useApi();
+const { getResource, putResource } = useApi();
 
 const route = useRoute();
 const id = ref<string>('');
@@ -46,7 +46,7 @@ const { meta } = useForm({
 const { value: nominal } = useField<string>('nominal');
 
 const save = async () => {
-  const response = await postResource('/admin/tabungan/'+id.value, {
+  const response = await putResource('/admin/tabungan/tarik/'+id.value, {
     nominal: nominal.value
   });
   if(response) {
@@ -59,7 +59,7 @@ const save = async () => {
 </script>
 <template>
   <Parent>
-    <BreadCrumb title="Setor Tabungan" role="Administrator" />
+    <BreadCrumb title="Tarik Tabungan" role="Administrator" />
     <div class="row my-2">
       <div class="col-12 text-end">
         <button class="btn btn-success" @click="() => $router.go(-1)">Kembali

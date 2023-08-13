@@ -48,6 +48,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/admin/savings/deposit.vue'),
   },
   {
+    path: '/tabungan/debit/:id',
+    name: 'debit Tabungan',
+    component: () => import('../views/admin/savings/debit.vue'),
+  },
+  {
     path: '/verifikasi-pembayaran',
     name: 'Verifikasi Pembayaran',
     component: () => import('../views/admin/payment/index.vue'),

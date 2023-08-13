@@ -11,6 +11,7 @@ import Notify from '../../../../helpers/notify';
 import router from '../../../../router';
 import { useRoute } from 'vue-router';
 import { decrypt } from '../../../../helpers/crypto';
+import { isDisableLayer } from '../../../../helpers/handleEvent';
 
 const { getResource, postResource, postResourceFile, putResource } = useApi();
 const route = useRoute();
@@ -25,6 +26,7 @@ onMounted(async () => {
       await getData();
     }
   }
+  isDisableLayer();
 });
 
 const data = ref<any>({});
@@ -82,10 +84,8 @@ const createUser = async () => {
 };
 
 const createPilgrim = async (i: string) => {
-  console.log(data.value.bank_name);
   let response: any;
   if (id.value) {
-    console.log(id.value);
     response = await putResource('/pilgrims/' + id.value, {
       user_account_id: i,
       saving_category_id: data.value.saving_category_id,
