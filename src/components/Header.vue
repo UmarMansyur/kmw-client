@@ -146,14 +146,17 @@ async function logout() {
   }
 }
 const messages = ref<any[]>([]);
-const { chanelSubscribe } = sessionPusher();
+const { getPusher } = sessionPusher();
 onMounted(() => {
   document.body.setAttribute('data-sidebar-size', 'lg');
   if (window.innerWidth <= 992) {
     clickedSidebar();
   }
-  const getMessage = chanelSubscribe('testing', 'event');
-  console.log(getMessage);
+  const pusher: any = getPusher;
+  const channel = pusher.subscribe('notification');
+  channel.bind('event', function (data: any) {
+    Sweet.success(data.message);
+  });
 });
 
 </script>
