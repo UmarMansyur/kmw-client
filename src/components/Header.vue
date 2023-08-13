@@ -150,7 +150,6 @@ onMounted(() => {
   if (window.innerWidth <= 992) {
     clickedSidebar();
   }
-
 });
 
 </script>
