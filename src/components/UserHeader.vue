@@ -50,9 +50,10 @@
                   <div class="simplebar-offset">
                     <div class="simplebar-content-wrapper">
                       <div class="simplebar-content" data-simplebar style="max-height: 230px;">
-                        <div class="text-reset notification-item" >
+                        <div class="text-reset notification-item">
                           <div class="d-flex" v-for="data in notifications" :key="data.notification_id"
-                            :class="data.status == 'unread' ? 'bg-body-tertiary' : ''" style="cursor: pointer" @click="readNotification(data.notification_id)">
+                            :class="data.status == 'unread' ? 'bg-body-tertiary' : ''" style="cursor: pointer"
+                            @click="readNotification(data.notification_id)">
                             <div class="flex-shrink-0 me-3">
                               <img :src="getUser.thumbnail" class="rounded-circle avatar-sm" alt="user-pic">
                             </div>
@@ -91,8 +92,6 @@
             </div>
           </div>
         </div>
-
-
 
         <div class="dropdown d-inline-block">
           <button type="button" class="btn header-item bg-light-subtle border-start border-end"
@@ -167,8 +166,8 @@ onMounted(async () => {
 
 
 const readNotification = async (id: string) => {
-  const response = await getResource('/notification/'+id);
-  if(response) {
+  const response = await getResource('/notification/' + id);
+  if (response) {
     await loadNotification();
     router.replace('/jamaah/laporan');
   }

@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { userType } from "../helpers/type";
 import useToken from "../composables/token";
+import { isDisableLayer } from "../helpers/handleEvent";
 const { decodeToken } = useToken();
 export const useSessionStore = defineStore({
   id: "session",
@@ -31,6 +32,7 @@ export const useSessionStore = defineStore({
       this.phone = response.phone;
       this.gender = response.gender;
       this.address = response.address;
+      isDisableLayer();
     },
     destroyUser() {
       this.id = 0;

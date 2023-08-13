@@ -62,6 +62,7 @@ import { computed, ref, watch } from 'vue';
 import useApi from '../../../composables/api';
 import Sweet from '../../../helpers/sweetalert2';
 import Notify from '../../../helpers/notify';
+import { isDisableLayer } from '../../../helpers/handleEvent';
 const { postResourceFile, putResource } = useApi();
 const emit = defineEmits(['updateUser']);
 const props = defineProps({
@@ -115,6 +116,7 @@ const updateUser = async () => {
     }
     emit('updateUser', user.value);
   });
+  isDisableLayer();
 };
 
 function handleFile() {

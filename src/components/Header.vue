@@ -78,7 +78,7 @@
             <div class="p-2 border-top d-grid">
               <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
                 <i class="mdi mdi-arrow-right-circle me-1"></i> <span>
-                  Lihat semua
+                  Lihat semua ini pesannya: {{ messages }}
                 </span>
               </a>
             </div>
@@ -110,11 +110,13 @@
 
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
+import { sessionPusher } from '../stores/pusher';
 import router from '../router';
 import useApi from '../composables/api';
 import Notify from '../helpers/notify';
 import { useSessionStore } from '../stores/session';
+import Sweet from '../helpers/sweetalert2';
 const { deleteResource } = useApi();
 const { getUser, destroyUser } = useSessionStore();
 
@@ -131,7 +133,6 @@ function clickedSidebar() {
     document.body.classList.remove("pace-done");
   } else {
     document.getElementById('thumbnail')?.classList.toggle('d-none');
-
   }
 }
 
@@ -144,12 +145,15 @@ async function logout() {
     router.replace('/login');
   }
 }
-
+const messages = ref<any[]>([]);
+const { chanelSubscribe } = sessionPusher();
 onMounted(() => {
   document.body.setAttribute('data-sidebar-size', 'lg');
   if (window.innerWidth <= 992) {
     clickedSidebar();
   }
+  const getMessage = chanelSubscribe('testing', 'event');
+  console.log(getMessage);
 });
 
 </script>
