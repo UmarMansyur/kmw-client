@@ -78,7 +78,7 @@
             <div class="p-2 border-top d-grid">
               <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
                 <i class="mdi mdi-arrow-right-circle me-1"></i> <span>
-                  Lihat semua
+                  Lihat semua ini pesannya: {{ messages }}
                 </span>
               </a>
             </div>
@@ -108,9 +108,13 @@
   </header>
 </template>
 
+<script lang="ts">
+declare const app: any;
+</script>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
+import { sessionPusher } from '../stores/pusher';
 import router from '../router';
 import useApi from '../composables/api';
 import Notify from '../helpers/notify';
@@ -131,7 +135,6 @@ function clickedSidebar() {
     document.body.classList.remove("pace-done");
   } else {
     document.getElementById('thumbnail')?.classList.toggle('d-none');
-
   }
 }
 
@@ -144,13 +147,21 @@ async function logout() {
     router.replace('/login');
   }
 }
-
+const messages = ref<any[]>([]);
+const { getPusher } = sessionPusher();
 onMounted(() => {
   document.body.setAttribute('data-sidebar-size', 'lg');
   if (window.innerWidth <= 992) {
     clickedSidebar();
   }
+  const pusher: any = getPusher;
+  var channel = pusher.subscribe('chat');
 
+  channel.bind('chat', function (data: any) {
+    console.log(data);
+    messages.value.push(JSON.stringify(data));
+  });
+  console.log(channel);
 });
 
 </script>
