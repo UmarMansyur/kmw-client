@@ -84,13 +84,14 @@ const handleSearch = async () => {
               <tr>
                 <th colspan="3" class="text-center">Jamaah</th>
                 <th rowspan="2" class="text-end">Saldo</th>
-                <th colspan="2" class="text-center">Aksi</th>
+                <th colspan="3" class="text-center">Aksi</th>
               </tr>
               <tr>
                 <th>Kode</th>
                 <th>Nama</th>
                 <th>Kategori</th>
                 <th class="text-center">Detail</th>
+                <th class="text-center">Edit</th>
                 <th class="text-center">Setoran</th>
               </tr>
             </thead>
@@ -102,13 +103,19 @@ const handleSearch = async () => {
                 <td class="text-end">{{ convertToRp(data.nominal) }}</td>
                 <td class="text-center">
                   <RouterLink :to="`/tabungan/detail/${encrypt(data.pilgrims_id.toString())}`" type="button"
-                    class="btn btn-info btn-sm waves-effect btn-label waves-light">
+                    class="btn btn-light btn-sm waves-effect btn-label waves-light">
                     <i class="bx bx-search label-icon"></i>
                     Lihat
                   </RouterLink>
                 </td>
                 <td class="text-center">
-
+                  <RouterLink :to="`/tabungan/debit/${encrypt(data.pilgrims_id.toString())}`" type="button"
+                    class="btn btn-danger btn-sm waves-effect btn-label waves-light">
+                    <i class="bx bx-log-in-circle label-icon"></i>
+                    Tarik
+                  </RouterLink>
+                </td>
+                <td class="text-center">
                   <RouterLink :to="`/tabungan/setor/${encrypt(data.pilgrims_id.toString())}`" type="button"
                     class="btn btn-success btn-sm waves-effect btn-label waves-light">
                     <i class="bx bx-navigation label-icon"></i>
@@ -124,8 +131,9 @@ const handleSearch = async () => {
           </table>
         </div>
       </div>
-  </div>
-  <Pagination :current-page="currentPage" :is-first-page="isFirstPage" :is-last-page="isLastPage" :go-to="goToPage"
-    :next-page="nextPage" :page-list="pageList" :total-page="totalPage" :prev-page="prevPage" :total-data="totalData"
-    v-if="result.length > 0" />
-</Parent></template>
+    </div>
+    <Pagination :current-page="currentPage" :is-first-page="isFirstPage" :is-last-page="isLastPage" :go-to="goToPage"
+      :next-page="nextPage" :page-list="pageList" :total-page="totalPage" :prev-page="prevPage" :total-data="totalData"
+      v-if="result.length > 0" />
+  </Parent>
+</template>

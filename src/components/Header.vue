@@ -148,20 +148,12 @@ async function logout() {
   }
 }
 const messages = ref<any[]>([]);
-const { getPusher } = sessionPusher();
 onMounted(() => {
   document.body.setAttribute('data-sidebar-size', 'lg');
   if (window.innerWidth <= 992) {
     clickedSidebar();
   }
-  const pusher: any = getPusher;
-  var channel = pusher.subscribe('chat');
 
-  channel.bind('chat', function (data: any) {
-    console.log(data);
-    messages.value.push(JSON.stringify(data));
-  });
-  console.log(channel);
 });
 
 </script>
