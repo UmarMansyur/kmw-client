@@ -2,7 +2,6 @@ import { ref } from "vue";
 import useApi from "./api";
 import { useSessionStore } from "../stores/session";
 import * as PusherPushNotifications from "@pusher/push-notifications-web";
-import { isDisableLayer } from "../helpers/handleEvent";
 
 const { getResource, postResource } = useApi();
 export default function useNotification() {

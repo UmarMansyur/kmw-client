@@ -81,15 +81,18 @@ export default function useApi() {
         formData.append(name, payload[name]);
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_KMW}/${endpoint}`, {
+      const response = await axios(`${import.meta.env.VITE_API_KMW}/${endpoint}`, {
         method,
         headers: {
           'Authorization': 'Bearer ' + getAccessToken()
         },
-        body: formData
+        data: formData
       });
       await checkResponse(response);
-      return await response.json();
+
+      const data = await response.data;
+      isDisableLayer();
+      return data;
     } catch (error: any) {
       Notify.error(error.message);
     }

@@ -88,8 +88,9 @@ const declineVerification = async () => {
   });
   id.value = '';
   if (response) {
-    Notify.success('Berhasil memverifikasi pembayaran');
+    Notify.success('Berhasil menolak setoran');
   }
+  comment.value = '';
   await fetchData();
   isDisableLayer();
 };
@@ -181,12 +182,12 @@ const subscribeNotification = async () => {
                 <td class="text-end">{{ convertToRp(data.nominal) }}</td>
                 <td class="text-center">
                   <button type="button" class="btn btn-info waves-effect btn-label waves-light"
-                    data-bs-target="#dinamyc-modal" data-bs-toggle="modal" @click="handleImage(data.pilgrims_id)">
+                    data-bs-target="#dinamyc-modal" data-bs-toggle="modal" @click="handleImage(data.transactional_savings_id)">
                     <i class="bx bx-file label-icon"></i> File</button>
                 </td>
                 <td class="text-center">
                   <button type="button" class="btn btn-danger waves-effect btn-label waves-light"
-                    data-bs-target="#dinamyc-modal" data-bs-toggle="modal" @click="handleDeclineClick(data.pilgrims_id)">
+                    data-bs-target="#dinamyc-modal" data-bs-toggle="modal" @click="handleDeclineClick(data.transactional_savings_id)">
                     <i class="bx bx-x label-icon"></i> Tolak</button>
                 </td>
                 <td class="text-center">

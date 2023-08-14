@@ -120,7 +120,7 @@ const getFile = (e: any) => {
 
 const tryDeposit = async () => {
   isEnableLayer();
-  const file_id = await postResourceFile('files/', 'POST', {
+  const file_id = await postResourceFile('files', 'POST', {
     user_id: getUser.id,
     name: 'Setor - ' + getUser.name + ' - ' + new Date().getTime(),
     file: file.value,

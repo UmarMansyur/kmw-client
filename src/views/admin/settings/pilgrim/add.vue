@@ -118,7 +118,7 @@ const createPilgrim = async (i: string) => {
   if (response) {
 
     if (data.value.nikah) {
-      await postResourceFile('files/', 'POST', {
+      await postResourceFile('files', 'POST', {
         user_id: i,
         name: 'nikah',
         file: data.value.nikah,
@@ -130,7 +130,7 @@ const createPilgrim = async (i: string) => {
         thumbnail: data.value.foto,
       });
 
-      await postResourceFile('files/', 'POST', {
+      await postResourceFile('files', 'POST', {
         user_id: i,
         name: 'foto',
         file: data.value.foto,
@@ -139,7 +139,7 @@ const createPilgrim = async (i: string) => {
 
 
     if (data.value.file_kk) {
-      await postResourceFile('files/', 'POST', {
+      await postResourceFile('files', 'POST', {
         user_id: i,
         name: 'KK',
         file: data.value.file_kk,
@@ -147,7 +147,7 @@ const createPilgrim = async (i: string) => {
     }
 
     if (data.value.ktp) {
-      await postResourceFile('files/', 'POST', {
+      await postResourceFile('files', 'POST', {
         user_id: i,
         name: 'KTP',
         file: data.value.ktp,
@@ -155,7 +155,7 @@ const createPilgrim = async (i: string) => {
     }
 
     if (data.value.akte) {
-      await postResourceFile('files/', 'POST', {
+      await postResourceFile('files', 'POST', {
         user_id: i,
         name: 'akte',
         file: data.value.akte,
