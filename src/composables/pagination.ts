@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import useApi from "./api";
+import { isDisableLayer } from "../helpers/handleEvent";
 const { getResource } = useApi();
 
 export default function usePagination(path: string, q?:any ,query?: any) {
@@ -7,7 +8,7 @@ export default function usePagination(path: string, q?:any ,query?: any) {
   const currentPage = ref<number>(1);
   const result = ref<any[]>([]);
   const pageList = ref<number[]>([]);
-  const limitPage = ref<number>(5);
+  const limitPage = ref<number>(10);
   const totalData = ref<number>(0);
   const startNumber = ref<number>(0);
 
@@ -75,6 +76,7 @@ export default function usePagination(path: string, q?:any ,query?: any) {
     currentPage.value = Number(response.data.pageNumber);
     generateButtons();
     startNumber.value = (currentPage.value - 1) * limitPage.value + 1;
+    isDisableLayer();
   }
 
 
@@ -94,6 +96,8 @@ export default function usePagination(path: string, q?:any ,query?: any) {
 
     generateButtons();
     startNumber.value = (currentPage.value - 1) * limitPage.value + 1;
+    isDisableLayer();
+
   }
 
   function isLastPage() {

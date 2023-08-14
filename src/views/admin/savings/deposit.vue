@@ -16,7 +16,7 @@ const route = useRoute();
 const id = ref<string>('');
 onMounted(async () => {
   isEnableLayer();
-   id.value = decrypt(route.params.id.toString());
+  id.value = decrypt(route.params.id.toString());
   await loadData();
   isDisableLayer();
 });
@@ -25,12 +25,12 @@ const data = ref<any>({});
 
 const loadData = async () => {
   const response = await getResource('/admin/tabungan/' + id.value);
-  if(response) {
+  if (response) {
     data.value = response.data;
     data.value.thumbnail = import.meta.env.VITE_API_KMW + '/' + response.data.thumbnail;
     data.value.nominal = convertToRp(response.data.nominal);
   }
-}
+};
 
 const schema = yup.object().shape({
   nominal: yup.number().required().min(1)
@@ -46,13 +46,19 @@ const { meta } = useForm({
 const { value: nominal } = useField<string>('nominal');
 
 const save = async () => {
-  const response = await postResource('/admin/tabungan/'+id.value, {
+  const response = await postResource('/admin/tabungan/' + id.value, {
     nominal: nominal.value
   });
-  if(response) {
-    Notify.success('Berhasil menyetor tabungan');
-    router.push('/tabungan');
+  if (response) {
+    if (response.status) {
+      Notify.success('Berhasil menyetor tabungan');
+      router.push('/tabungan');
+    } else {
+      Notify.error(response.message);
+    }
   }
+  nominal.value = '';
+  isDisableLayer();
 }
 
 
@@ -81,8 +87,8 @@ const save = async () => {
             <div class="row mb-4">
               <label for="saldo" class="col-sm-3 col-form-label">Saldo</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" id="saldo"
-                  placeholder="Contoh: Rp. 1xxx" disabled v-model="data.nominal">
+                <input type="text" class="form-control" id="saldo" placeholder="Contoh: Rp. 1xxx" disabled
+                  v-model="data.nominal">
               </div>
             </div>
             <div class="row mb-4">
@@ -96,7 +102,8 @@ const save = async () => {
                 <button type="button" class="btn btn-light float-start">
                   <i class="bx bx-revision"></i> Reset
                 </button>
-                  <button type="submit" class="btn btn-info float-end" @click="save" :disabled="!meta.valid"> <i class="bx bx-send font-size-18"></i> Setor</button>
+                <button type="submit" class="btn btn-info float-end" @click="save" :disabled="!meta.valid"> <i
+                    class="bx bx-send font-size-18"></i> Setor</button>
               </div>
             </div>
           </div>

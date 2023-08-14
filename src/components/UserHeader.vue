@@ -125,6 +125,7 @@ import Notify from '../helpers/notify';
 import router from '../router';
 import useNotification from '../composables/notification';
 import { isDisableLayer } from '../helpers/handleEvent';
+import { sessionPusher } from '../stores/pusher';
 const { deleteResource, getResource } = useApi();
 const { getUser, destroyUser } = useSessionStore();
 const { loadNotification, notifications, unreadNotification } = useNotification();
@@ -162,6 +163,7 @@ onMounted(async () => {
   if (window.innerWidth <= 992) {
     clickedSidebar();
   }
+  subscribeNotification();
 });
 
 
@@ -173,5 +175,18 @@ const readNotification = async (id: string) => {
   }
   isDisableLayer();
 };
+const { getPusher } = sessionPusher();
+const subscribeNotification = () => {
+  const pusher: any = getPusher;
+  const chanel = pusher.subscribe('testing');
+  chanel.bind('event', async (_data: any) => {
+    await loadNotification();
+  });
+  feather.replace();
+  isDisableLayer();
+};
+</script>
 
+<script lang="ts">
+  declare const feather: any;
 </script>

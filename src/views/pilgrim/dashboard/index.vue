@@ -77,10 +77,15 @@ import ParentJamaah from '../../../components/ParentJamaah.vue';
 import { ref, onMounted } from 'vue';
 import { convertToRp, isDisableLayer, isEnableLayer } from '../../../helpers/handleEvent';
 import useApi from '../../../composables/api';
+import useNotification from '../../../composables/notification';
+import { useSessionStore } from '../../../stores/session';
 const { getResource } = useApi();
+const { webPush } = useNotification();
+const { getUser } = useSessionStore();
 onMounted(async () => {
   isEnableLayer();
   await loadData();
+  await webPush('jamaah-' + getUser.id);
   isDisableLayer();
 });
 
@@ -89,5 +94,5 @@ const data = ref<any>({});
 const loadData = async () => {
   const response = await getResource('/jamaah/information');
   data.value = response.data;
-}
+};
 </script>

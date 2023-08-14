@@ -96,9 +96,9 @@ export default function useApi() {
   }
   async function putResourceFile(endpoint: string, payload: any) {
     try {
+      isEnableLayer();
       await validateToken();
       const formData = new FormData();
-
       for (const name in payload) {
         formData.append(name, payload[name]);
       }

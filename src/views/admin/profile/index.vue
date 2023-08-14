@@ -70,6 +70,8 @@ import Account from './account.vue';
 import Datapersonal from './datapersonal.vue';
 import Editdatapersonal from './editdatapersonal.vue';
 import { useSessionStore } from '../../../stores/session';
+import { isDisableLayer } from '../../../helpers/handleEvent';
+import { onMounted } from 'vue';
 const { getUser, setUser } = useSessionStore();
 const updateUser = async () => {
   await setUser();
@@ -78,6 +80,8 @@ const updateUser = async () => {
 function clickedEdit() {
   document.getElementById('nav-link-edit')?.click();
 }
+
+onMounted(() => {isDisableLayer()});
 
 
 </script>

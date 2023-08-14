@@ -133,13 +133,13 @@ async function getSearch () {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(data, i) in result" :key="i" :class="data.limit < data.nominal_saldo ? 'bg-warning-subtle' : ''">
+              <tr v-for="(data, i) in result" :key="i" :class="data.limit < data.saldo ? 'bg-warning-subtle' : ''">
                 <td>{{ data.created_at.slice(0, 10) }}</td>
                 <td>{{ data.kode }}</td>
                 <td>{{ data.username }}</td>
                 <td class="text-end">{{ convertToRp(data.nominal) }}</td>
                 <td class="text-end">
-                  {{ convertToRp(data.nominal_saldo) }}
+                  {{ convertToRp(data.saldo) }}
                 </td>
               </tr>
               <tr v-if="result.length == 0">

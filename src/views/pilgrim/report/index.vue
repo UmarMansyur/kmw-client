@@ -127,7 +127,7 @@ const download = async () => {
                 <td>{{ data.username }}</td>
                 <td class="text-end">{{ convertToRp(data.nominal) }}</td>
                 <td class="text-end">
-                  {{ convertToRp(data.nominal_saldo) }}
+                  {{ convertToRp(data.saldo) }}
                 </td>
               </tr>
               <tr v-if="result.length == 0">

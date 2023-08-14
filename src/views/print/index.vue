@@ -20,7 +20,7 @@
         <td>{{ data.username }}</td>
         <td class="text-end">{{ convertToRp(data.nominal) }}</td>
         <td class="text-end">
-          {{ convertToRp(data.nominal_saldo) }}
+          {{ convertToRp(data.saldo) }}
         </td>
       </tr>
       <tr v-if="result.length == 0">
@@ -40,18 +40,18 @@ const route = useRoute();
 onMounted(async () => {
   isEnableLayer();
   await loadData();
-  isDisableLayer();
 });
 
 const loadData = async () => {
   const query = route.fullPath;
   const { data: response } = await axios.get(import.meta.env.VITE_API_KMW + query);
   result.value = response.data;
+  isDisableLayer();
   if (result.value) {
     setTimeout(() => {
       window.print();
       window.close();
-    }, 10);
+    }, 300);
   }
 }
 

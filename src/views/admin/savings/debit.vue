@@ -16,7 +16,7 @@ const route = useRoute();
 const id = ref<string>('');
 onMounted(async () => {
   isEnableLayer();
-   id.value = decrypt(route.params.id.toString());
+  id.value = decrypt(route.params.id.toString());
   await loadData();
   isDisableLayer();
 });
@@ -25,12 +25,12 @@ const data = ref<any>({});
 
 const loadData = async () => {
   const response = await getResource('/admin/tabungan/' + id.value);
-  if(response) {
+  if (response) {
     data.value = response.data;
     data.value.thumbnail = import.meta.env.VITE_API_KMW + '/' + response.data.thumbnail;
     data.value.nominal = convertToRp(response.data.nominal);
   }
-}
+};
 
 const schema = yup.object().shape({
   nominal: yup.number().required().min(1)
@@ -46,11 +46,11 @@ const { meta } = useForm({
 const { value: nominal } = useField<string>('nominal');
 
 const save = async () => {
-  const response = await putResource('/admin/tabungan/tarik/'+id.value, {
+  const response = await putResource('/admin/tabungan/tarik/' + id.value, {
     nominal: nominal.value
   });
-  if(response) {
-    Notify.success('Berhasil menyetor tabungan');
+  if (response) {
+    Notify.success('Berhasil menarik tabungan');
     router.push('/tabungan');
   }
 }
@@ -59,7 +59,7 @@ const save = async () => {
 </script>
 <template>
   <Parent>
-    <BreadCrumb title="Tarik Tabungan" role="Administrator" />
+    <BreadCrumb title="Edit Jumlah Saldo" role="Administrator" />
     <div class="row my-2">
       <div class="col-12 text-end">
         <button class="btn btn-success" @click="() => $router.go(-1)">Kembali
@@ -81,22 +81,24 @@ const save = async () => {
             <div class="row mb-4">
               <label for="saldo" class="col-sm-3 col-form-label">Saldo</label>
               <div class="col-sm-9">
-                <input type="text" class="form-control" id="saldo"
-                  placeholder="Contoh: Rp. 1xxx" disabled v-model="data.nominal">
+                <input type="text" class="form-control" id="saldo" placeholder="Contoh: Rp. 1xxx" disabled
+                  v-model="data.nominal">
               </div>
             </div>
             <div class="row mb-4">
-              <label for="deposit" class="col-sm-3 col-form-label">Setoran</label>
+              <label for="deposit" class="col-sm-3 col-form-label">Nominal Penarikan</label>
               <div class="col-sm-9">
                 <input type="number" class="form-control" id="deposit" placeholder="Contoh: Rp. 1xxx" v-model="nominal">
               </div>
+
             </div>
             <div class="row justify-content-end">
               <div class="col-sm-12">
                 <button type="button" class="btn btn-light float-start">
                   <i class="bx bx-revision"></i> Reset
                 </button>
-                  <button type="submit" class="btn btn-info float-end" @click="save" :disabled="!meta.valid"> <i class="bx bx-send font-size-18"></i> Setor</button>
+                <button type="submit" class="btn btn-danger float-end" @click="save" :disabled="!meta.valid"> <i
+                    class="bx bx-credit-card font-size-18"></i> Tarik</button>
               </div>
             </div>
           </div>

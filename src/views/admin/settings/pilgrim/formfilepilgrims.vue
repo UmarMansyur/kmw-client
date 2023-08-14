@@ -28,7 +28,7 @@
           </div>
           <div class="col-lg-6">
             <label for="file-foto" class="form-label">Foto (4x3 Cm): </label>
-            <input type="file" class="form-control" id="file-foto" @change="getFoto" accept=".pdf">
+            <input type="file" class="form-control" id="file-foto" @change="getFoto" accept="image/*">
           </div>
         </div>
         <div class="row mb-3">

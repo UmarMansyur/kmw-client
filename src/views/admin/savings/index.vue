@@ -110,9 +110,9 @@ const handleSearch = async () => {
                 </td>
                 <td class="text-center">
                   <RouterLink :to="`/tabungan/debit/${encrypt(data.pilgrims_id.toString())}`" type="button"
-                    class="btn btn-danger btn-sm waves-effect btn-label waves-light">
-                    <i class="bx bx-log-in-circle label-icon"></i>
-                    Tarik
+                    class="btn btn-info btn-sm waves-effect btn-label waves-light">
+                    <i class="bx bx-credit-card label-icon"></i>
+                    Edit
                   </RouterLink>
                 </td>
                 <td class="text-center">
@@ -124,7 +124,7 @@ const handleSearch = async () => {
                 </td>
               </tr>
               <tr v-if="result.length == 0">
-                <td colspan="6" class="text-center bg-light"> <img src="/images/error404.png" class="img-fluid">
+                <td colspan="7" class="text-center bg-light"> <img src="/images/error404.png" class="img-fluid">
                 </td>
               </tr>
             </tbody>

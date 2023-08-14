@@ -8,6 +8,8 @@ import { convertToRp, isDisableLayer, isEnableLayer } from '../../../helpers/han
 import Modal from '../../../components/Modal.vue';
 import useApi from '../../../composables/api';
 import Notify from '../../../helpers/notify';
+import { sessionPusher } from '../../../stores/pusher';
+
 const { getResource, putResource } = useApi();
 
 
@@ -30,6 +32,7 @@ const {
 onMounted(async () => {
   isEnableLayer();
   await fetchData();
+  await subscribeNotification();
   isDisableLayer();
 });
 
@@ -96,6 +99,22 @@ const handleDeclineClick = (i: string) => {
   id.value = i;
 }
 
+const { getPusher } = sessionPusher();
+const subscribeNotification = async () => {
+  isEnableLayer();
+  const pusher: any = getPusher;
+  const chanel = pusher.subscribe('testing');
+  chanel.bind('event', async (_data: any) => {
+    await fetchData();
+  });
+  feather.replace();
+  isDisableLayer();
+};
+
+</script>
+
+<script lang="ts">
+  declare const feather: any;
 </script>
 <template>
   <Parent>
@@ -172,7 +191,7 @@ const handleDeclineClick = (i: string) => {
                 </td>
                 <td class="text-center">
                   <button type="button" class="btn btn-success waves-effect btn-label waves-light"
-                    @click="acceptVerification(data.pilgrims_id)"><i class="bx bx-check-double label-icon"></i>
+                    @click="acceptVerification(data.transactional_savings_id)"><i class="bx bx-check-double label-icon"></i>
                     Terima</button>
                 </td>
               </tr>

@@ -79,9 +79,10 @@ import { useField, useForm } from 'vee-validate';
 import Notify from '../../../helpers/notify';
 import useNotification from '../../../composables/notification';
 
+
 const { getResource, postResourceFile, postResource } = useApi();
 const { getUser } = useSessionStore();
-const { loadNotification, pushNotification: post, depositNotification } = useNotification();
+const { loadNotification, depositNotification } = useNotification();
 onMounted(async () => {
   isEnableLayer();
   await loadData();
@@ -131,10 +132,10 @@ const tryDeposit = async () => {
   });
   if (response) {
     await pushNotification(response.data.transactional_savings_id);
+    nominal.value = '';
+    file.value = '';
+    Notify.success('Berhasil setor');
   }
-  nominal.value = '';
-  file.value = '';
-  Notify.success('Berhasil setor');
   await loadData();
   await loadNotification();
   isDisableLayer();
@@ -142,7 +143,6 @@ const tryDeposit = async () => {
 
 const pushNotification = async (id: string) => {
   await depositNotification(id);
-  await post();
 }
 
 </script>

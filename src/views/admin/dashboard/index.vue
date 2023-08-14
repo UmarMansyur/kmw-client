@@ -4,15 +4,18 @@ import BreadCrumb from '../../../components/BreadCrumb.vue';
 import { onMounted, ref } from 'vue';
 import useApi from '../../../composables/api';
 import { convertToRp, isDisableLayer, isEnableLayer } from '../../../helpers/handleEvent';
+import useNotification from '../../../composables/notification';
 
 const { getResource } = useApi();
-
+const { webPush } = useNotification();
 
 onMounted(async () => {
   isEnableLayer();
   await loadData();
+  await webPush('admin');
   isDisableLayer();
 });
+
 const data = ref<any>({});
 const loadData = async () => {
   const response = await getResource('/admin/dashboard');

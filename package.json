@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@onesignal/onesignal-vue3": "^1.0.2",
+    "@pusher/push-notifications-server": "^1.2.6",
+    "@pusher/push-notifications-web": "^1.1.0",
     "axios": "^1.4.0",
     "crypto-js": "^4.1.1",
     "onesignal-vue": "^1.0.2",

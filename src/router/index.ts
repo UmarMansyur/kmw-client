@@ -49,7 +49,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/tabungan/debit/:id',
-    name: 'debit Tabungan',
+    name: 'Debit Tabungan',
     component: () => import('../views/admin/savings/debit.vue'),
   },
   {

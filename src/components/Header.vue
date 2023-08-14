@@ -25,7 +25,7 @@
           <button type="button" class="btn header-item noti-icon position-relative"
             id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i data-feather="bell"></i>
-            <span class="badge bg-danger rounded-pill">1</span>
+            <span class="badge bg-danger rounded-pill" v-if="unreadNotification > 0">{{ unreadNotification }}</span>
           </button>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
             aria-labelledby="page-header-notifications-dropdown">
@@ -35,7 +35,8 @@
                   <h6 class="m-0"> Notifikasi </h6>
                 </div>
                 <div class="col-auto">
-                  <a href="#!" class="small text-reset text-decoration-underline"> Tidak dibaca (1)</a>
+                  <a href="#!" class="small text-reset text-decoration-underline"> Tidak dibaca ({{ unreadNotification
+                  }})</a>
                 </div>
               </div>
             </div>
@@ -47,21 +48,27 @@
                 <div class="simplebar-mask">
                   <div class="simplebar-offset">
                     <div class="simplebar-content-wrapper">
-                      <div class="simplebar-content">
-                        <RouterLink to="/verifikasi-pembayaran" class="text-reset notification-item bg-secondary">
-                          <div class="d-flex">
+                      <div class="simplebar-content" data-simplebar style="max-height: 230px;">
+                        <div class="text-reset notification-item">
+                          <div class="d-flex" v-for="data in notifications" :key="data.notification_id"
+                            :class="data.status == 'unread' ? 'bg-body-tertiary' : ''" style="cursor: pointer"
+                            @click="readNotification(data.notification_id)">
                             <div class="flex-shrink-0 me-3">
-                              <img src="/images/users/avatar-2.jpg" class="rounded-circle avatar-sm" alt="user-pic">
+                              <img :src="getUser.thumbnail" class="rounded-circle avatar-sm" alt="user-pic">
                             </div>
                             <div class="flex-grow-1">
-                              <h6 class="mb-1">Meita Regina Prayitno</h6>
+                              <h6 class="mb-1">{{ getUser.name }}</h6>
                               <div class="font-size-13 text-muted">
-                                <p class="mb-1">Pembayaran belum diverifikasi</p>
-                                <p class="mb-0"><i class="mdi mdi-clock-outline"></i> <span>1 jam yang lalu</span></p>
+                                <p class="mb-1">{{ data.message }}</p>
+                                <p class="mb-0"><i class="mdi mdi-clock-outline"></i>
+                                  <span>
+                                    {{ data.created_at }}
+                                  </span>
+                                </p>
                               </div>
                             </div>
                           </div>
-                        </RouterLink>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -78,13 +85,12 @@
             <div class="p-2 border-top d-grid">
               <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
                 <i class="mdi mdi-arrow-right-circle me-1"></i> <span>
-                  Lihat semua ini pesannya: {{ messages }}
+                  Lihat semua
                 </span>
               </a>
             </div>
           </div>
         </div>
-
         <div class="dropdown d-inline-block">
           <button type="button" class="btn header-item bg-light-subtle border-start border-end"
             id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -108,18 +114,23 @@
   </header>
 </template>
 
+<script lang="ts">
+  declare const feather : any;
+</script>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { sessionPusher } from '../stores/pusher';
 import router from '../router';
 import useApi from '../composables/api';
 import Notify from '../helpers/notify';
 import { useSessionStore } from '../stores/session';
-import Sweet from '../helpers/sweetalert2';
+import { isDisableLayer, isEnableLayer } from '../helpers/handleEvent';
+import useNotification from '../composables/notification';
 const { deleteResource } = useApi();
 const { getUser, destroyUser } = useSessionStore();
-
+const { loadNotification, notifications, unreadNotification,   } = useNotification();
+const { getResource } = useApi();
 function clickedSidebar() {
   document.body.classList.toggle("pace-done");
   document.body.classList.toggle("sidebar-enable");
@@ -145,18 +156,34 @@ async function logout() {
     router.replace('/login');
   }
 }
-const messages = ref<any[]>([]);
+
 const { getPusher } = sessionPusher();
-onMounted(() => {
+onMounted(async () => {
+  isEnableLayer();
   document.body.setAttribute('data-sidebar-size', 'lg');
   if (window.innerWidth <= 992) {
     clickedSidebar();
   }
-  const pusher: any = getPusher;
-  const channel = pusher.subscribe('notification');
-  channel.bind('event', function (data: any) {
-    Sweet.success(data.message);
-  });
+  await loadNotification();
+  subscribeNotification();
 });
 
+const subscribeNotification = () => {
+  const pusher: any = getPusher;
+  const chanel = pusher.subscribe('testing');
+  chanel.bind('event', async (_data: any) => {
+    await loadNotification();
+  });
+  feather.replace();
+  isDisableLayer();
+};
+
+const readNotification = async (id: string) => {
+  const response = await getResource('/notification/' + id);
+  if (response) {
+    await loadNotification();
+    router.replace('/verifikasi-pembayaran');
+  }
+  isDisableLayer();
+};
 </script>
