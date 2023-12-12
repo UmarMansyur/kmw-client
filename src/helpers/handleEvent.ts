@@ -17,6 +17,7 @@ function handleTogglePassword() {
 }
 
 function convertToRp(value: string) {
+  if (!value) return 'Rp 0';
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(parseInt(value)).slice(0, -3);
 }
 

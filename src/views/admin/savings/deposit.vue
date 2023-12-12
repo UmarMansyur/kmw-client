@@ -33,21 +33,31 @@ const loadData = async () => {
 };
 
 const schema = yup.object().shape({
-  nominal: yup.number().required().min(1)
+  nominal: yup.string().required().min(1)
 });
 
 const { meta } = useForm({
   validationSchema: schema,
   initialValues: {
-    nominal: 0
+    nominal: 'Rp. 0'
   }
 });
 
 const { value: nominal } = useField<string>('nominal');
 
+const convertNominal = () => {
+  nominal.value = nominal.value.replace(/\D/g, '');
+  nominal.value = nominal.value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  nominal.value = 'Rp. ' + nominal.value;
+};
+
+const convertToNumber = () => {
+  return nominal.value.replace(/\D/g, '');  
+};
+
 const save = async () => {
   const response = await postResource('/admin/tabungan/' + id.value, {
-    nominal: nominal.value
+    nominal: convertToNumber()
   });
   if (response) {
     if (response.status) {
@@ -94,7 +104,7 @@ const save = async () => {
             <div class="row mb-4">
               <label for="deposit" class="col-sm-3 col-form-label">Setoran</label>
               <div class="col-sm-9">
-                <input type="number" class="form-control" id="deposit" placeholder="Contoh: Rp. 1xxx" v-model="nominal">
+                <input type="text" class="form-control" id="deposit" placeholder="Contoh: Rp. 1xxx" v-model="nominal" @keyup="convertNominal()">
               </div>
             </div>
             <div class="row justify-content-end">

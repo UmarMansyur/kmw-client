@@ -197,7 +197,8 @@ const subscribeNotification = async () => {
                 </td>
               </tr>
               <tr v-if="result.length == 0">
-                <td colspan="6" class="text-center bg-light"> <img src="/images/error404.png" class="img-fluid">
+                <td colspan="6" class="text-center bg-light"> <img src="/images/error404.svg" class="img-fluid" width="400">
+                  <h6>DATA TIDAK DITEMUKAN</h6>
                 </td>
               </tr>
             </tbody>

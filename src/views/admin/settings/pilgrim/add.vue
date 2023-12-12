@@ -20,6 +20,8 @@ onMounted(async () => {
   $("#basic-pills-wizard").bootstrapWizard({
     tabClass: "nav nav-pills nav-justified",
   });
+
+
   if (route.params.id) {
     id.value = decrypt(route.params.id.toString());
     if (id.value) {

@@ -142,8 +142,9 @@ const getSearch = async () => {
               </tr>
               <tr v-if="result.length == 0">
                 <td colspan="5" class="text-center bg-light">
-                  <img src="/images/error404.png" class="img-fluid">
-                  <h5 class="text-danger mt-0">Data tidak ditemukan</h5>
+                  <img src="/images/error404.svg" class="img-fluid" width="400">
+                  <h6>DATA TIDAK DITEMUKAN</h6>
+                  
                 </td>
               </tr>
             </tbody>

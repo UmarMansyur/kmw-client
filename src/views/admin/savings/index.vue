@@ -57,7 +57,7 @@ const handleSearch = async () => {
           </div>
         </div>
       </div>
-      <div class="col-md-3" />
+      <div class="col-md-3"></div>
       <div class="col-md-4 col-12 ">
         <div class="form-group row">
           <label for="search" class="col-sm-2 col-2 col-form-label">Cari:
@@ -124,7 +124,8 @@ const handleSearch = async () => {
                 </td>
               </tr>
               <tr v-if="result.length == 0">
-                <td colspan="7" class="text-center bg-light"> <img src="/images/error404.png" class="img-fluid">
+                <td colspan="7" class="text-center bg-light"> <img src="/images/error404.svg" class="img-fluid" width="400">
+                  <h6>DATA TIDAK DITEMUKAN</h6>
                 </td>
               </tr>
             </tbody>

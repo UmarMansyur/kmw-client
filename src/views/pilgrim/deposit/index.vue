@@ -38,7 +38,7 @@
                 <div class="row mb-4">
                   <label for="saldo" class="col-sm-3 col-form-label">Nominal: </label>
                   <div class="col-sm-9">
-                    <input type="number" class="form-control" id="saldo" placeholder="Contoh: Rp. 1xxx" v-model="nominal">
+                    <input type="text" class="form-control" id="saldo" placeholder="Contoh: Rp. 1xxx" v-model="nominal" @keyup="convertNominal()">
                   </div>
                 </div>
                 <div class="row mb-4">
@@ -97,7 +97,7 @@ const loadData = async () => {
 };
 
 const schema = yup.object().shape({
-  nominal: yup.number().required().min(1),
+  nominal: yup.string().required().min(1),
   file: yup.string().required(),
 });
 
@@ -116,6 +116,16 @@ const getFile = (e: any) => {
   file.value = e.target.files[0];
 };
 
+const convertNominal = () => {
+  nominal.value = nominal.value.replace(/\D/g, '');
+  nominal.value = nominal.value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  nominal.value = 'Rp. ' + nominal.value;
+};
+
+const convertToNumber = () => {
+  return nominal.value.replace(/\D/g, '');  
+};
+
 
 
 const tryDeposit = async () => {
@@ -125,15 +135,19 @@ const tryDeposit = async () => {
     name: 'Setor - ' + getUser.name + ' - ' + new Date().getTime(),
     file: file.value,
   });
+
   const response = await postResource('/jamaah/information', {
     pilgrims_id: getUser.id,
-    nominal: nominal.value,
+    nominal: convertToNumber(),
     file: file_id,
   });
   if (response) {
     await pushNotification(response.data.transactional_savings_id);
     nominal.value = '';
     file.value = '';
+    // reset file
+    const input = document.getElementById('file') as HTMLInputElement;
+    input.value = '';
     Notify.success('Berhasil setor');
   }
   await loadData();

@@ -75,6 +75,7 @@ const user: any = ref<any>({});
 const watchUser = computed(() => props.getUser);
 const newImage = ref<any>(null);
 watch(watchUser, (value) => {
+
   user.value = {
     id: value.id,
     name: value.name,
@@ -85,6 +86,7 @@ watch(watchUser, (value) => {
     phone: value.phone,
     thumbnail: value.thumbnail,
   };
+
 }, { immediate: true });
 
 const updateUser = async () => {
