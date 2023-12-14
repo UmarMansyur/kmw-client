@@ -471,7 +471,7 @@ body[data-layout="horizontal"] .footer {
 }
 #sidebar-menu ul li a:hover svg {
   color: var(--bs-sidebar-menu-item-hover-color);
-  fill: var(--bs-sidebar-menu-item-hover-effact-color);
+  /* fill: var(--bs-sidebar-menu-item-hover-effact-color); */
 }
 #sidebar-menu ul li .badge {
   margin-top: 4px;
@@ -777,7 +777,7 @@ body[data-sidebar="dark"] #sidebar-menu ul li a:hover i {
 }
 body[data-sidebar="dark"] #sidebar-menu ul li a:hover svg {
   color: var(--bs-sidebar-dark-menu-item-hover-color);
-  fill: var(--bs-sidebar-menu-item-hover-effact-color);
+  /* fill: var(--bs-sidebar-menu-item-hover-effact-color); */
 }
 body[data-sidebar="dark"] #sidebar-menu ul li ul.sub-menu li a {
   color: var(--bs-sidebar-dark-menu-sub-item-color);

@@ -118,28 +118,42 @@ async function getSearch () {
     </div>
       <div class="col-12">
         <div class="table-responsive">
-          <table class="table table-hover table-bordered">
+          <table class="table table-hover table-bordered font-size-13">
             <thead class="align-middle">
               <tr>
                 <th class="col" rowspan="2" style="width: 17%;">Tanggal Pembayaran</th>
-                <th class="col text-center" colspan="2">Jamaah</th>
-                <th class="col text-center" colspan="2">Pembayaran</th>
+                <th class="col text-center" colspan="4">Jamaah</th>
+                <th class="col text-center" colspan="4">Pembayaran</th>
               </tr>
               <tr>
                 <th>Kode</th>
                 <th>Nama Jamaah</th>
+                <th>Kategori Haji/Umroh</th>
+                <th class="text-end">Target Pembayaran</th>
                 <th class="text-end">Debit</th>
+                <th class="text-end">Kredit</th>
                 <th class="text-end">Saldo</th>
+                <th class="text-end">Sisa</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(data, i) in result" :key="i" :class="data.limit < data.saldo ? 'bg-warning-subtle' : ''">
-                <td>{{ data.created_at.slice(0, 10) }}</td>
+                <td>{{ new Date(data.created_at).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) }} </td>
                 <td>{{ data.kode }}</td>
                 <td>{{ data.username }}</td>
-                <td class="text-end">{{ convertToRp(data.nominal) }}</td>
+                <td>{{ data.category }}</td>
+                <td class="text-end">
+                  {{ convertToRp(data.limit) }}
+                </td>
+                <td class="text-end">{{ data.nominal < 0 ? '-' : convertToRp(data.nominal) }}</td>
+                <td class="text-end">
+                  {{ data.nominal  < 0 ? convertToRp((data.nominal * -1).toString()) : '-' }}
+                </td>
                 <td class="text-end">
                   {{ convertToRp(data.saldo) }}
+                </td>
+                <td class="text-end">
+                  {{ convertToRp((data.limit - data.saldo).toString()) }}
                 </td>
               </tr>
               <tr v-if="result.length == 0">

@@ -40,13 +40,13 @@
                 <div class="col-md-6">
                   <div class="timeline-box">
                     <div class="timeline-date bg-warning text-center rounded">
-                      <h3 class="text-white mb-0">{{ data.tgl_lunas ? getDate(data.tgl_lunas) : '?' }}</h3>
-                      <p class="mb-0 text-white">{{ data.tgl_lunas ? getMonth(data.tgl_lunas) : '?' }}</p>
+                      <h3 class="text-white mb-0">{{ data.tgl_berangkat ? getDate(data.tgl_lunas) : '?' }}</h3>
+                      <p class="mb-0 text-white">{{ data.tgl_berangkat ? getMonth(data.tgl_lunas) : '?' }}</p>
                     </div>
                     <div class="event-content">
                       <div class="timeline-text">
                         <h3 class="font-size-18">Tanggal Setoran Lunas</h3>
-                        <p class="mb-0 mt-2 pt-1 text-muted">{{ data.tgl_lunas ? getDay(data.tgl_lunas) : 'Belum Lunas' }}</p>
+                        <p class="mb-0 mt-2 pt-1 text-muted">{{ data.tgl_berangkat ? getDay(data.tgl_lunas) : 'Belum Lunas' }}</p>
                       </div>
                     </div>
 

@@ -106,26 +106,23 @@ const download = async () => {
     <div class="row">
       <div class="col-12">
         <div class="table-responsive">
-          <table class="table table-hover table-bordered">
+          <table class="table table-hover table-bordered table-striped">
             <thead class="align-middle">
               <tr>
-                <th class="col" rowspan="2" style="width: 17%;">Tanggal Pembayaran</th>
-                <th class="col text-center" colspan="2">Jamaah</th>
-                <th class="col text-center" colspan="2">Pembayaran</th>
-              </tr>
-              <tr>
-                <th>Kode</th>
-                <th>Nama Jamaah</th>
+                <th class="col" style="width: 17%;">Tanggal Pembayaran</th>
                 <th class="text-end">Debit</th>
+                <th class="text-end">Kredit</th>
                 <th class="text-end">Saldo</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(data, i) in result" :key="i">
-                <td>{{ data.created_at.slice(0, 10) }}</td>
-                <td>{{ data.kode }}</td>
-                <td>{{ data.username }}</td>
-                <td class="text-end">{{ convertToRp(data.nominal) }}</td>
+                <td>{{ new Date(data.created_at).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) }} </td>
+                
+                <td class="text-end">{{ data.nominal < 0 ? '-' : convertToRp(data.nominal) }}</td>
+                <td class="text-end">
+                  {{ data.nominal  < 0 ? convertToRp((data.nominal * -1).toString()) : '-' }}
+                </td>
                 <td class="text-end">
                   {{ convertToRp(data.saldo) }}
                 </td>

@@ -39,7 +39,7 @@ const schema = yup.object().shape({
 const { meta } = useForm({
   validationSchema: schema,
   initialValues: {
-    nominal: 'Rp. 0'
+    nominal: 'Rp. '
   }
 });
 
@@ -76,24 +76,34 @@ const save = async () => {
 <template>
   <Parent>
     <BreadCrumb title="Setor Tabungan" role="Administrator" />
-    <div class="row my-2">
-      <div class="col-12 text-end">
-        <button class="btn btn-success" @click="() => $router.go(-1)">Kembali
+    <div class="row mt-2 mb-4">
+      <div class="col-6">
+        <button class="btn btn-success" @click="() => $router.go(-1)"> <i class="bx bx-arrow-back"></i> Kembali
         </button>
+      </div>
+      <div class="col-6 text-end">
+        <RouterLink to="/verifikasi-pembayaran" class="btn btn-primary">
+          <i class="bx bx-check-circle"></i> Verifikasi Pembayaran
+        </RouterLink>
       </div>
     </div>
     <div class="row">
-      <div class="col-xl-3 mx-auto text-center mb-2">
+      <div class="col-xl-4 mx-auto mb-2">
         <img :src="data.thumbnail" alt="" class="img-thumbnail">
       </div>
-      <div class="col-xl-9">
+      <div class="col-xl-8">
         <div class="row">
+          <div class="col-md-12 mb-2">
+            <div class="alert alert-info">
+              Pastikan data yang anda masukkan benar, demi keamanan data nasabah.
+            </div>
+          </div>
           <div class="col-md-12 mb-3">
             <h6>{{ data.username }} {{ data.gender == 'laki-laki' ? '(L)' : '(P)' }}</h6>
             <p class="mb-0">{{ data.address }}</p>
             <span class="badge bg-warning font-size-12">{{ data.name }}</span>
           </div>
-          <div class="col-md-10">
+          <div class="col-md-12">
             <div class="row mb-4">
               <label for="saldo" class="col-sm-3 col-form-label">Saldo</label>
               <div class="col-sm-9">

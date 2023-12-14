@@ -91,7 +91,7 @@ const handleSearch = async () => {
                 <th>Nama</th>
                 <th>Kategori</th>
                 <th class="text-center">Detail</th>
-                <th class="text-center">Edit</th>
+                <th class="text-center">Penarikan</th>
                 <th class="text-center">Setoran</th>
               </tr>
             </thead>
@@ -110,9 +110,9 @@ const handleSearch = async () => {
                 </td>
                 <td class="text-center">
                   <RouterLink :to="`/tabungan/debit/${encrypt(data.pilgrims_id.toString())}`" type="button"
-                    class="btn btn-info btn-sm waves-effect btn-label waves-light">
+                    class="btn btn-danger btn-sm waves-effect btn-label waves-light">
                     <i class="bx bx-credit-card label-icon"></i>
-                    Edit
+                    Penarikan
                   </RouterLink>
                 </td>
                 <td class="text-center">

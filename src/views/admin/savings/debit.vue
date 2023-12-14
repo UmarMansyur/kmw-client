@@ -33,21 +33,31 @@ const loadData = async () => {
 };
 
 const schema = yup.object().shape({
-  nominal: yup.number().required().min(1)
+  nominal: yup.string().required().min(1)
 });
 
 const { meta } = useForm({
   validationSchema: schema,
   initialValues: {
-    nominal: 0
+    nominal: 'Rp. '
   }
 });
 
 const { value: nominal } = useField<string>('nominal');
 
+const convertNominal = () => {
+  nominal.value = nominal.value.replace(/\D/g, '');
+  nominal.value = nominal.value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  nominal.value = 'Rp. ' + nominal.value;
+};
+
+const convertToNumber = () => {
+  return nominal.value.replace(/\D/g, '');  
+};
+
 const save = async () => {
   const response = await putResource('/admin/tabungan/tarik/' + id.value, {
-    nominal: nominal.value
+    nominal: convertToNumber()
   });
   if (response) {
     Notify.success('Berhasil menarik tabungan');
@@ -62,7 +72,8 @@ const save = async () => {
     <BreadCrumb title="Edit Jumlah Saldo" role="Administrator" />
     <div class="row my-2">
       <div class="col-12 text-end">
-        <button class="btn btn-success" @click="() => $router.go(-1)">Kembali
+        <button class="btn btn-outline-success" @click="() => $router.go(-1)">
+          <i class="bx bx-arrow-back"></i>Kembali
         </button>
       </div>
     </div>
@@ -88,7 +99,7 @@ const save = async () => {
             <div class="row mb-4">
               <label for="deposit" class="col-sm-3 col-form-label">Nominal Penarikan</label>
               <div class="col-sm-9">
-                <input type="number" class="form-control" id="deposit" placeholder="Contoh: Rp. 1xxx" v-model="nominal">
+                <input type="text" class="form-control" id="deposit" placeholder="Contoh: Rp. 1xxx" v-model="nominal" @keyup="convertNominal()">
               </div>
 
             </div>
@@ -97,8 +108,8 @@ const save = async () => {
                 <button type="button" class="btn btn-light float-start">
                   <i class="bx bx-revision"></i> Reset
                 </button>
-                <button type="submit" class="btn btn-danger float-end" @click="save" :disabled="!meta.valid"> <i
-                    class="bx bx-credit-card font-size-18"></i> Tarik</button>
+                <button type="submit" class="btn btn-info float-end" @click="save" :disabled="!meta.valid"> <i
+                    class="bx bx-credit-card"></i> Tarik Saldo</button>
               </div>
             </div>
           </div>

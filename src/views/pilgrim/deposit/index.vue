@@ -38,7 +38,7 @@
                 <div class="row mb-4">
                   <label for="saldo" class="col-sm-3 col-form-label">Nominal: </label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control" id="saldo" placeholder="Contoh: Rp. 1xxx" v-model="nominal" @keyup="convertNominal()">
+                    <input type="text" class="form-control" id="saldo" placeholder="Contoh: Rp. 1xxx" v-model="nominal" @keyup="convertNominal()" autofocus="true">
                   </div>
                 </div>
                 <div class="row mb-4">
@@ -104,7 +104,7 @@ const schema = yup.object().shape({
 const { meta } = useForm({
   validationSchema: schema,
   initialValues: {
-    nominal: '',
+    nominal: 'Rp. ',
     file: '',
   }
 });
@@ -130,16 +130,23 @@ const convertToNumber = () => {
 
 const tryDeposit = async () => {
   isEnableLayer();
-  const file_id = await postResourceFile('files', 'POST', {
+  const fileResult = await postResourceFile('files', 'POST', {
     user_id: getUser.id,
     name: 'Setor - ' + getUser.name + ' - ' + new Date().getTime(),
     file: file.value,
   });
 
+
+  if(!fileResult) {
+    isDisableLayer();
+    return;
+  }
+
+
   const response = await postResource('/jamaah/information', {
     pilgrims_id: getUser.id,
     nominal: convertToNumber(),
-    file: file_id,
+    file_id: fileResult.data.file_id
   });
   if (response) {
     await pushNotification(response.data.transactional_savings_id);
