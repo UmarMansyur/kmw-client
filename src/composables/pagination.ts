@@ -82,7 +82,8 @@ export default function usePagination(path: string, q?:any ,query?: any) {
 
   async function search() {
     let search = [];
-    if(q != ''){
+    console.log(q.value);
+    if(q != '' && q.value){
       search.push(`${path}${q.value}&page=${currentPage.value}&limit=${limitPage.value}&search=${query.value}`);
     } else {
       search.push(`${path}?page=${currentPage.value}&limit=${limitPage.value}&search=${query.value}`);

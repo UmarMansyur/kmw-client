@@ -6,6 +6,7 @@ import { onMounted, ref } from 'vue';
 import usePagination from '../../../composables/pagination';
 import { convertToRp, isDisableLayer, isEnableLayer } from '../../../helpers/handleEvent';
 import { encrypt } from '../../../helpers/crypto';
+import DisplayLimit from '../../../components/DisplayLimit.vue';
 const query = ref<string>('');
 
 const {
@@ -21,6 +22,7 @@ const {
   prevPage,
   goToPage,
   fetchData,
+  changeLimit
 } = usePagination("/admin/tabungan", '', query);
 
 onMounted(async () => {
@@ -35,6 +37,11 @@ const handleSearch = async () => {
   isDisableLayer();
 };
 
+const getLimit = (value: number) => {
+  changeLimit(value);
+};
+
+
 
 </script>
 <template>
@@ -43,18 +50,7 @@ const handleSearch = async () => {
     <div class="row">
       <div class="col-md-5 col-12 ">
         <div class="form-group row">
-          <label for="search" class="col-md-2 col-4 col-form-label">Tampilkan:
-          </label>
-          <div class="col-md-3 col-8">
-            <div class="input-group mb-3">
-              <select class="form-select">
-                <option value="1">10</option>
-                <option value="2">25</option>
-                <option value="3">50</option>
-                <option value="4">100</option>
-              </select>
-            </div>
-          </div>
+          <DisplayLimit @limit="getLimit"></DisplayLimit>
         </div>
       </div>
       <div class="col-md-3"></div>

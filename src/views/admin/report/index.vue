@@ -8,6 +8,7 @@ import usePagination from '../../../composables/pagination';
 import { ref, onMounted } from 'vue';
 import { convertToRp, isDisableLayer, isEnableLayer } from '../../../helpers/handleEvent';
 import axios from 'axios';
+import DisplayLimit from '../../../components/DisplayLimit.vue';
 
 const query = ref<string>('');
 const filter = ref<string>('');
@@ -24,6 +25,7 @@ const {
   prevPage,
   goToPage,
   fetchData,
+  changeLimit
 } = usePagination("/report", filter, query);
 
 onMounted(async () => {
@@ -56,6 +58,9 @@ async function getSearch () {
   await search();
   isDisableLayer();
 }
+const getLimit = (value: number) => {
+  changeLimit(value);
+};
 
 </script>
 <template>
@@ -64,18 +69,7 @@ async function getSearch () {
     <div class="row">
       <div class="col-md-5 col-12 ">
         <div class="form-group row">
-          <label for="search" class="col-md-2 col-4 col-form-label">Tampilkan:
-          </label>
-          <div class="col-md-3 col-8">
-            <div class="input-group mb-3">
-              <select class="form-select">
-                <option value="1">10</option>
-                <option value="2">25</option>
-                <option value="3">50</option>
-                <option value="4">100</option>
-              </select>
-            </div>
-          </div>
+          <DisplayLimit @limit="getLimit"></DisplayLimit>
         </div>
       </div>
       <div class="col-md-1"></div>
@@ -133,7 +127,7 @@ async function getSearch () {
                 <th class="text-end">Debit</th>
                 <th class="text-end">Kredit</th>
                 <th class="text-end">Saldo</th>
-                <th class="text-end">Sisa</th>
+                <th class="text-end">Lebih/Kurang</th>
               </tr>
             </thead>
             <tbody>
@@ -152,12 +146,16 @@ async function getSearch () {
                 <td class="text-end">
                   {{ convertToRp(data.saldo) }}
                 </td>
-                <td class="text-end">
+                <th class="text-end text-primary" v-if="data.nominal > data.limit">
+                  
+                  {{ convertToRp((data.limit - data.saldo * -1).toString()) }}
+                </th>
+                <th class="text-end text-danger" v-else>
                   {{ convertToRp((data.limit - data.saldo).toString()) }}
-                </td>
+                </th>
               </tr>
               <tr v-if="result.length == 0">
-                <td colspan="5" class="text-center bg-light">
+                <td colspan="9" class="text-center bg-light">
                   <img src="/images/error404.svg" class="img-fluid" width="400">
                   <h6>DATA TIDAK DITEMUKAN</h6>
                 </td>

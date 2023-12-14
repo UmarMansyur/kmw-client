@@ -9,6 +9,7 @@ import { ref, onMounted } from 'vue';
 import { isDisableLayer, isEnableLayer } from '../../../helpers/handleEvent';
 import useApi from '../../../composables/api';
 import Notify from '../../../helpers/notify';
+import DisplayLimit from '../../../components/DisplayLimit.vue';
 const { putResource } = useApi();
 const query = ref<string>('');
 const {
@@ -24,6 +25,7 @@ const {
   prevPage,
   goToPage,
   fetchData,
+  changeLimit
 } = usePagination("/admin/departure", '', query);
 
 onMounted(async () => {
@@ -59,6 +61,10 @@ async function getSearch () {
   isDisableLayer();
 }
 
+const getLimit = (value: number) => {
+  changeLimit(value);
+};
+
 
 </script>
 
@@ -69,18 +75,7 @@ async function getSearch () {
     <div class="row">
       <div class="col-md-5 col-12 ">
         <div class="form-group row">
-          <label for="search" class="col-md-2 col-4 col-form-label">Tampilkan:
-          </label>
-          <div class="col-md-3 col-8">
-            <div class="input-group mb-3">
-              <select class="form-select">
-                <option value="1">10</option>
-                <option value="2">25</option>
-                <option value="3">50</option>
-                <option value="4">100</option>
-              </select>
-            </div>
-          </div>
+          <DisplayLimit @limit="getLimit"></DisplayLimit>
         </div>
       </div>
       <div class="col-md-3" />

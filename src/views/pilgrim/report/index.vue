@@ -9,6 +9,7 @@ import { ref, onMounted } from 'vue';
 import { convertToRp, isDisableLayer, isEnableLayer } from '../../../helpers/handleEvent';
 import axios from 'axios';
 import { useSessionStore } from '../../../stores/session';
+import DisplayLimit from '../../../components/DisplayLimit.vue';
 const { getUser } = useSessionStore();
 const query = ref<string>('');
 const filter = ref<string>('?id=' + getUser.id);
@@ -18,12 +19,14 @@ const {
   currentPage,
   totalPage,
   pageList,
+  search,
   isFirstPage,
   isLastPage,
   nextPage,
   prevPage,
   goToPage,
   fetchData,
+  changeLimit
 } = usePagination("/report", filter, query);
 
 onMounted(async () => {
@@ -51,6 +54,16 @@ const download = async () => {
   }
 }
 
+const getLimit = (value: number) => {
+  changeLimit(value);
+};
+
+const getSearch = async () => {
+  isEnableLayer();
+  await search();
+  isDisableLayer();
+}
+
 </script>
 <template>
   <ParentJamaah>
@@ -58,18 +71,7 @@ const download = async () => {
     <div class="row">
       <div class="col-md-5 col-12 ">
         <div class="form-group row">
-          <label for="search" class="col-md-2 col-4 col-form-label">Tampilkan:
-          </label>
-          <div class="col-md-3 col-8">
-            <div class="input-group mb-3">
-              <select class="form-select">
-                <option value="1">10</option>
-                <option value="2">25</option>
-                <option value="3">50</option>
-                <option value="4">100</option>
-              </select>
-            </div>
-          </div>
+          <DisplayLimit @limit="getLimit"></DisplayLimit>
         </div>
       </div>
       <div class="col-md-1"></div>
@@ -79,13 +81,14 @@ const download = async () => {
           </label>
           <div class="col-sm-10 col-10">
             <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="Masukkan kata kunci" />
+              <input type="text" class="form-control" placeholder="Masukkan kata kunci" v-model="query"
+                @change="getSearch()" />
               <div class="input-group-append">
-                <button class="btn btn-info" type="button">
-                  <i class="bx bx-search-alt" />
+                <button class="btn btn-info" type="button" @click="getSearch()">
+                  <i class="bx bx-search-alt"></i>
                 </button>
                 <button class="btn btn-light ms-2" type="button" data-bs-target="#dinamyc-modal" data-bs-toggle="modal">
-                  <i class="bx bx-filter" />
+                  <i class="bx bx-filter"></i>
                 </button>
                 <Modal title="Filter">
                   <Form @filter="getFilter" />
