@@ -57,12 +57,13 @@ const destroy = (id: string) => {
   });
 };
 
-
 const saving_category = ref<any>({});
 const getSavingCategories = async (id: string) => {
   const response = await getResource('/saving-categories/' + id);
+  isDisableLayer();
   if (response) {
     saving_category.value = response.data;
+    saving_category.value.limit = convertToRp(response.data.limit);
   }
 };
 

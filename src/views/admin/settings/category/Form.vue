@@ -7,7 +7,7 @@
     </div>
     <div class="col-12 my-3">
       <label for="limit">Batas Pembayaran:</label>
-      <input type="number" class="form-control" name="limit" id="limit" placeholder="Contoh: 2000000" v-model="limit">
+      <input type="text" class="form-control" name="limit" id="limit" placeholder="Contoh: 2000000" v-model="limit"  @keyup="convertNominal()">
     </div>
   </div>
   <div class="col-12">
@@ -49,17 +49,28 @@ const { value: limit } = useField<string>("limit");
 
 const emit = defineEmits(['loadData']);
 
+const convertNominal = () => {
+  limit.value = limit.value.replace(/\D/g, '');
+  limit.value = limit.value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  limit.value = 'Rp. ' + limit.value;
+};
+
+const convertToNumber = () => {
+  return limit.value.replace(/\D/g, '');  
+};
+
+
 const addSavingType = async () => {
   let response = null;
   if (id.value) {
     response = await putResource(`/saving-categories/${id.value}`, {
       name: saving_type.value,
-      limit: limit.value,
+      limit: convertToNumber(),
     });
   } else {
     response = await postResource('/saving-categories', {
       name: saving_type.value,
-      limit: limit.value,
+      limit: convertToNumber(),
     });
   }
   if (response) {

@@ -131,7 +131,8 @@ const getLimit = (value: number) => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(data, i) in result" :key="i" :class="data.limit < data.saldo ? 'bg-warning-subtle' : ''">
+
+              <tr v-for="(data, i) in result" :key="i" :class="data.saldo - data.limit < 0 ? '' : 'bg-warning-subtle'">
                 <td>{{ new Date(data.created_at).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) }} </td>
                 <td>{{ data.kode }}</td>
                 <td>{{ data.username }}</td>
@@ -146,13 +147,12 @@ const getLimit = (value: number) => {
                 <td class="text-end">
                   {{ convertToRp(data.saldo) }}
                 </td>
-                <th class="text-end text-primary" v-if="data.nominal > data.limit">
-                  
-                  {{ convertToRp((data.limit - data.saldo * -1).toString()) }}
-                </th>
-                <th class="text-end text-danger" v-else>
+                <td class="text-end" v-if="data.saldo - data.limit < 0">
                   {{ convertToRp((data.limit - data.saldo).toString()) }}
-                </th>
+                </td>
+                <td class="text-end" v-else>
+                  {{ convertToRp((data.saldo - data.limit).toString()) }}
+                </td>
               </tr>
               <tr v-if="result.length == 0">
                 <td colspan="9" class="text-center bg-light">
