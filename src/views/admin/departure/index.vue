@@ -37,7 +37,7 @@ onMounted(async () => {
 const id = ref<string>('');
 const getData = async (value: any) => {
   isEnableLayer();
-  const response = await putResource('/admin/departure/', {
+  const response = await putResource('/admin/departure', {
     id: id.value,
     time: value
   });
@@ -47,6 +47,10 @@ const getData = async (value: any) => {
   await fetchData();
   isDisableLayer();
 };
+
+const atur = (i: string) => {
+  id.value = i;
+}
 
 const time = ref<string>('');
 
@@ -126,7 +130,7 @@ const getLimit = (value: number) => {
                     <i class="bx bx-pencil"></i>
                   </button>
                   <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#dinamyc-modal"
-                    @click="id = data.id" v-else>
+                    @click="atur(data.id)" v-else>
                     <i class="bx bx-calendar"></i> Atur
                   </button>
                 </td>
